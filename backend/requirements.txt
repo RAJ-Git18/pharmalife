@@ -4,5 +4,3 @@ psycopg2
 python-dotenv
 django-cors-headers
 django-environ
-torch
-transformers
