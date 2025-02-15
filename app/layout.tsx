@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css"
 import Navbar from "@/components/Navbar";
+import { Slider } from "@/components/ui/carousel";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -15,6 +16,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <Navbar />
+      <Slider/>
       <body>
         {children}
       </body>

@@ -2,23 +2,44 @@
 @tailwind components;
 @tailwind utilities;
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+
+/* for the scroll bar */
+/* Apply a custom scrollbar to the entire page */
+::-webkit-scrollbar {
+  width: 10px;
+  /* Width of the scrollbar */
+  height: 10px;
+  /* Height of horizontal scrollbar */
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  /* Light background for the track */
+  border-radius: 10px;
 }
 
-body {
-  color: var(--foreground);
-  background: var(--background);
-  font-family: Arial, Helvetica, sans-serif;
+::-webkit-scrollbar-thumb {
+  background: #888;
+  /* Color of the scrollbar thumb */
+  border-radius: 10px;
+  transition: background-color 0.3s ease;
 }
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+  /* Darker color when hovered */
+}
+
+::-webkit-scrollbar-corner {
+  background: #f1f1f1;
+  /* Color of the bottom right corner */
+}
+
+/* Smooth scrolling */
+html {
+  scroll-behavior: smooth;
+}
+
 .embla {
   overflow: hidden;
 }
@@ -28,4 +49,10 @@ body {
 .embla__slide {
   flex: 0 0 100%;
   min-width: 0;
+}
+
+.embla__img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
 }
