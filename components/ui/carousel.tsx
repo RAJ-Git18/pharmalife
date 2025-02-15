@@ -1,15 +1,36 @@
-import React from 'react'
+'use client'
+import React, { useEffect } from 'react'
 import useEmblaCarousel from 'embla-carousel-react'
-import Autoplay from 'embla-carousel-autoplay'
-export function EmblaCarousel() {
-  const [emblaRef] = useEmblaCarousel()
+import Image from 'next/image'
+
+const images = [
+  "/images/slider/masks.jpg",
+  "/images/slider/medicine.png"
+]
+
+export function Slider() {
+  const [emblaRef, emblaApi] = useEmblaCarousel({ loop: true })
+
+  useEffect(() => {
+    if (emblaApi) {
+      console.log(emblaApi.slideNodes()) // Logs slide elements
+    }
+  }, [emblaApi])
 
   return (
     <div className="embla" ref={emblaRef}>
       <div className="embla__container">
-        <div className="embla__slide">Slide 1</div>
-        <div className="embla__slide">Slide 2</div>
-        <div className="embla__slide">Slide 3</div>
+        {images.map((src, index) => (
+          <div className="embla__slide" key={index}>
+            <Image 
+              src={src} 
+              alt={`Slide ${index + 1}`} 
+              width={500}  // Adjust width as needed
+              height={100} // Adjust height as needed
+              className="embla__img" 
+            />
+          </div>
+        ))}
       </div>
     </div>
   )

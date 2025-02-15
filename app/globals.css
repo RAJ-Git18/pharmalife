@@ -22,10 +22,19 @@ body {
 .embla {
   overflow: hidden;
 }
+
 .embla__container {
   display: flex;
 }
+
 .embla__slide {
   flex: 0 0 100%;
-  min-width: 0;
+  min-width: 100%;
 }
+
+.embla__img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+}
+
