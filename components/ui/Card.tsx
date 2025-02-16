@@ -4,11 +4,11 @@ import { ShoppingCart, Heart } from 'lucide-react'
 import Link from 'next/link'
 
 
-const Card = () => {
+const Card = ({ image_path }: { image_path: string }) => {
   return (
     <div className='border-2 mt-10 h-70 w-64 rounded-sm flex flex-col justify-between items-center gap-2'>
       <Image
-        src="/images/slider/medicine.png"
+        src={image_path}
         alt="Cards.png"
         width={100}
         height={200}

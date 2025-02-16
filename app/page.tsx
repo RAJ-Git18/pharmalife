@@ -3,11 +3,12 @@ import Card from "@/components/ui/Card";
 import { Slider } from "@/components/ui/carousel";
 import Image from "next/image";
 
-const card_images = [
-  "images/slider/medicine2.png",
-  "images/slider/medicine2.png",
-  "images/slider/medicine2.png",
-  "images/slider/medicine2.png",
+const card_images : string[] = [
+  "/images/slider/medicine.png",
+  "/images/products/aniseptic.png",
+  "/images/slider/medicine.png",
+  "/images/products/aniseptic.png",
+                                                                 
 ]
 
 
@@ -24,7 +25,7 @@ export default function Home() {
           {
             card_images.map((value, index) => (
               <ul key={index} className="products-features flex  ">
-                <li><Card /></li>
+                <li><Card image_path = {value} /></li>
               </ul>
             ))
           }
