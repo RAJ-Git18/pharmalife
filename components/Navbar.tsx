@@ -8,7 +8,7 @@ import Image from 'next/image';
 export default function Navbar() {
 
   return (
-    <nav className="bg-slate-100 p-2 mx-4 my-2 rounded-md flex items-center justify-between ">
+    <nav className="bg-slate-100 p-2 mx-32 my-2 rounded-md flex items-center justify-between ">
 
       <Link href="/">
         <Image

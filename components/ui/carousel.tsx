@@ -18,16 +18,16 @@ export function Slider() {
   }, [emblaApi])
 
   return (
-    <div className="embla" ref={emblaRef}>
+    <div className="embla rounded-sm" ref={emblaRef}>
       <div className="embla__container">
         {images.map((src, index) => (
           <div className="embla__slide" key={index}>
-            <Image 
-              src={src} 
-              alt={`Slide ${index + 1}`} 
+            <Image
+              src={src}
+              alt={`Slide ${index + 1}`}
               width={500}  // Adjust width as needed
               height={100} // Adjust height as needed
-              className="embla__img" 
+              className="embla__img"
             />
           </div>
         ))}

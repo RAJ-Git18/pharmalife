@@ -1,9 +1,17 @@
+import Navbar from "@/components/Navbar";
+import { Slider } from "@/components/ui/carousel";
 import Image from "next/image";
 
 export default function Home() {
   return (
-    <div className="flex items-center justify-center my-auto font-bold text-3xl">
-      <p className="text-red-700 my-auto"></p>
+    <div>
+      <div className="navbar">
+        <Navbar />
+      </div>
+
+      <div className="slider">
+        <Slider />
+      </div>
     </div>
   )
 }
