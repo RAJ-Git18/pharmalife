@@ -18,7 +18,7 @@ export function Slider() {
   }, [emblaApi])
 
   return (
-    <div className="embla w-full overflow-hidden" ref={emblaRef}>
+    <div className="embla w-full overflow-hidden rounded-sm" ref={emblaRef}>
     <div className="embla__container flex">
       {images.map((src, index) => (
         <div className="embla__slide min-w-full relative aspect-[16/6]" key={index}>

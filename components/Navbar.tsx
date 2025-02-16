@@ -3,12 +3,13 @@
 import Link from 'next/link';
 import { useState } from 'react';
 import Image from 'next/image';
+import { ShoppingCart } from "lucide-react"
 
 
 export default function Navbar() {
 
   return (
-    <nav className="bg-white p-2 my-4 rounded-md flex items-center justify-between ">
+    <nav className="mx-32 bg-white p-2 my-4 rounded-md flex items-center justify-between ">
 
       <Link href="/">
         <Image
@@ -37,12 +38,7 @@ export default function Navbar() {
           Register
         </Link>
         <Link href="/cart" className="text-green hover:text-gray-100">
-          <Image
-            src="/images/cart/image.png"
-            width={40}
-            height={0}
-            alt='cart iamge'
-          />
+        <ShoppingCart size={34}/>
         </Link>
       </div>
 
