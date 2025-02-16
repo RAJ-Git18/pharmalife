@@ -8,7 +8,7 @@ import Image from 'next/image';
 export default function Navbar() {
 
   return (
-    <nav className="bg-slate-100 p-2 mx-32 my-2 rounded-md flex items-center justify-between ">
+    <nav className="bg-white p-2 my-4 rounded-md flex items-center justify-between ">
 
       <Link href="/">
         <Image
@@ -33,7 +33,7 @@ export default function Navbar() {
           placeholder="Search..."
           className="px-4 py-2 rounded-md bg-gray-200 text-white"
         />
-        <Link href="/register" className="text-white font-semibold bg-green-600 px-4 py-2 rounded-md hover:bg-green-700">
+        <Link href="/register" className="text-white font-semibold bg-[#1FB271] px-4 py-2 rounded-md hover:bg-green-700">
           Register
         </Link>
         <Link href="/cart" className="text-green hover:text-gray-100">
@@ -49,5 +49,5 @@ export default function Navbar() {
 
 
     </nav>
-  );
+  )
 }
