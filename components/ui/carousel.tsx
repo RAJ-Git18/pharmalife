@@ -27,13 +27,10 @@ export function Slider() {
         <div className="embla__container flex">
           {images.map((src, index) => (
             <div className="embla__slide min-w-full relative aspect-[16/6]" key={index}>
-              <Image
+              <img
                 src={src}
                 alt={`Slide ${index + 1}`}
-                fill
-                className="object-cover w-full"
-                priority
-                quality={100}
+                className="object-cover w-full h-[500px]"
               />
             </div>
           ))}
@@ -43,7 +40,7 @@ export function Slider() {
       {/* Left Arrow */}
       <button
         onClick={scrollPrev}
-        className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full shadow-md hover:bg-gray-700"
+        className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-[#F3F4F6] text-black p-2 rounded-full shadow-md hover:bg-gray-200"
       >
         <ChevronLeft size={24} />
       </button>
@@ -51,7 +48,7 @@ export function Slider() {
       {/* Right Arrow */}
       <button
         onClick={scrollNext}
-        className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-gray-800 text-white p-2 rounded-full shadow-md hover:bg-gray-700"
+        className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-[#F3F4F6] text-black  p-2 rounded-full shadow-md hover:bg-gray-200"
       >
         <ChevronRight size={24} />
       </button>

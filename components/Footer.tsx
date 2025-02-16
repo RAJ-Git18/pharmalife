@@ -5,7 +5,7 @@ import Image from "next/image";
 
 const Footer: React.FC = () => {
   return (
-    <footer className="bg-[#FFFFFF] text-gray-700">
+    <footer className="bg-[#FFFFFF] text-gray-700 mt-10">
       <div className="container mx-auto px-8 py-12 grid grid-cols-1 md:grid-cols-5 gap-12"> {/* Increased gap */}
         {/* Company Info */}
         <div className="col-span-1 md:col-span-2">
@@ -22,12 +22,12 @@ const Footer: React.FC = () => {
           </p>
           <div className="mt-4 space-y-3 text-md"> {/* Increased gap */}
             <p className="flex items-center gap-3"> {/* Increased gap */}
-              <MapPin size={16} className="text-green-500" /> Swayambu, Kathmandu</p>
+              <MapPin size={16} className="text-[#1EB373]" /> Swayambu, Kathmandu</p>
             <p className="flex items-center gap-3"> {/* Increased gap */}
-              <Phone size={16} className="text-green-500" /> +977 900000000
+              <Phone size={16} className="text-[#1EB373]" /> +977 900000000
             </p>
             <p className="flex items-center gap-3"> {/* Increased gap */}
-              <Mail size={16} className="text-green-500" /> fristchoice@info.com
+              <Mail size={16} className="text-[#1EB373]" /> fristchoice@info.com
             </p>
           </div>
         
@@ -66,10 +66,10 @@ const Footer: React.FC = () => {
             <input
               type="email"
               placeholder="Email*"
-              className="w-full p-2 border rounded-l-md focus:outline-none text-lg" 
+              className="w-full p-2 border rounded-l-md focus:outline-none text-lg mr-2" 
             />
-            <button className="bg-green-500 p-2 rounded-r-md text-white text-lg">
-              <Send size={18} />
+            <button className="bg-[#1EB373] p-2 rounded-r-md text-white text-lg">
+              <Send size={26} />
             </button>
           </div>
           <h3 className="font-semibold text-xl mt-6"> {/* Increased text size */}
