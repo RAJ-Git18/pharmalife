@@ -11,7 +11,7 @@ const card_images = [
 
 const Card = () => {
   return (
-    <div className='bg-blue-300 h-80 w-64 rounded-sm flex flex-col justify-center items-center'>
+    <div className='bg-blue-300 h-80 w-64 rounded-sm flex flex-col justify-between items-center'>
         <Image
           src="/images/slider/medicine.png"
           alt="Cards.png"
@@ -21,9 +21,9 @@ const Card = () => {
       />
       
       <div className="card_name">name is here</div>
-      <div className="">
+      <div className="flex justify-between bg-blue-600 w-full p-4">
         <div className="price">price</div>
-        <div className="card_whilist">
+        <div className="card_whilist flex gap-2">
           <ShoppingCart />
           <Heart/>
         </div>
