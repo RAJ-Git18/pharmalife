@@ -5,7 +5,7 @@ import Image from "next/image";
 
 const Footer: React.FC = () => {
   return (
-    <footer className="bg-gray-100 text-gray-700">
+    <footer className="bg-[#FFFFFF] text-gray-700">
       <div className="container mx-auto px-8 py-12 grid grid-cols-1 md:grid-cols-5 gap-12"> {/* Increased gap */}
         {/* Company Info */}
         <div className="col-span-1 md:col-span-2">
@@ -39,8 +39,8 @@ const Footer: React.FC = () => {
             Company
           </h3>
           <div className="mt-4 space-y-3 text-lg"> {/* Increased gap and text size */}
-            <a href="#" className="block">About</a>
-            <a href="#" className="block">All Products</a>
+            <a href="/about" className="block">About</a>
+            <a href="/products" className="block">All Products</a>
             <a href="/location" className="block">Locations Map</a>
             {/* <a href="#" className="block">FAQ</a> */}
             <a href="#" className="block">Contact us</a>
@@ -55,7 +55,7 @@ const Footer: React.FC = () => {
           <div className="mt-4 space-y-3 text-lg"> {/* Increased gap and text size */}
             <a href="#" className="block">Wish List</a>
             <a href="#" className="block">Login</a>
-            <a href="#" className="block">Terms & Conditions</a>
+            <a href="/termsandcondition" className="block">Terms & Conditions</a>
           </div>
         </div>
 
