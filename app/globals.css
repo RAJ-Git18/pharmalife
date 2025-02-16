@@ -53,6 +53,6 @@ html {
 
 .embla__img {
   width: 100%;
-  height: auto;
+  /* height: auto; */
   object-fit: cover;
 }

@@ -4,7 +4,7 @@ import useEmblaCarousel from 'embla-carousel-react'
 import Image from 'next/image'
 
 const images = [
-  "/images/slider/masks.jpg",
+  "/images/slider/banner2.jpg",
   "/images/slider/medicine.png"
 ]
 
@@ -18,20 +18,22 @@ export function Slider() {
   }, [emblaApi])
 
   return (
-    <div className="embla rounded-sm" ref={emblaRef}>
-      <div className="embla__container">
-        {images.map((src, index) => (
-          <div className="embla__slide" key={index}>
-            <Image
-              src={src}
-              alt={`Slide ${index + 1}`}
-              width={500}  // Adjust width as needed
-              height={100} // Adjust height as needed
-              className="embla__img"
-            />
-          </div>
-        ))}
-      </div>
+    <div className="embla w-full overflow-hidden" ref={emblaRef}>
+    <div className="embla__container flex">
+      {images.map((src, index) => (
+        <div className="embla__slide min-w-full relative aspect-[16/6]" key={index}>
+          <Image
+            src={src}
+            alt={`Slide ${index + 1}`}
+            fill 
+            className="object-cover w-full"
+            priority 
+            quality={100} // Avoids Next.js compression
+          />
+        </div>
+      ))}
     </div>
+  </div>
+  
   )
 }
