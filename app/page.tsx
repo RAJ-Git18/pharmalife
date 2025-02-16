@@ -4,7 +4,7 @@ import Image from "next/image";
 
 export default function Home() {
   return (
-    <div>
+    <div className="mx-32">
       <div className="navbar">
         <Navbar />
       </div>
