@@ -19,8 +19,27 @@ export default function Home() {
         <Slider />
       </div>
 
+
+      {/* FEATURED PRODUCTS */}
       <div className="cards mt-20 ">
-        <h1 className="md:text-5xl font-semibold text-2xl text-center">Latest Products</h1>
+        <h1 className="md:text-5xl font-bold text-2xl text-center border-t-2 pt-10">Featured Products</h1>
+        <div className="flex flex-wrap justify-evenly">
+          {
+            card_images.map((value, index) => (
+              <ul key={index} className="products-features flex  ">
+                <li><Card image_path = {value} /></li>
+              </ul>
+            ))
+          }
+        </div>
+
+      </div>
+
+
+
+      {/* LATEST PRODUCTS */}
+      <div className="cards mt-20 ">
+        <h1 className="md:text-5xl font-bold text-2xl text-center border-t-2 pt-10">Latest Products</h1>
         <div className="flex flex-wrap justify-evenly">
           {
             card_images.map((value, index) => (
