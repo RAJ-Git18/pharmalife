@@ -4,12 +4,17 @@ import React from 'react'
 import Image from 'next/image'
 import { ShoppingCart, Heart } from 'lucide-react'
 import Link from 'next/link'
+import useCartStore from '@/store/userCartStore'
 
 
 const Card = ({ image_path }: { image_path: string }) => {
 
+  const {cartCount, addToCart} = useCartStore()
+
   //add the cart to the backend
   const cartClicked = async () => {
+    addToCart()
+    console.log(cartCount)
     const response = await fetch("http://127.0.0.1:8000/api/cart")
     const data = await response.json()
     console.log(data)
@@ -32,12 +37,10 @@ const Card = ({ image_path }: { image_path: string }) => {
         <div className="price">price</div>
         <div className="card_whilist flex gap-3">
 
+            <button onClick={cartClicked}>
+              <ShoppingCart />
 
-          <Link href='/cart'>
-          <button onClick={cartClicked}>
-            <ShoppingCart />
-          </button>
-          </Link>
+            </button>
 
           <Link href='/cart'><Heart /></Link>
         </div>

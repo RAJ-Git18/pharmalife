@@ -1,12 +1,14 @@
 'use client'
 
 import Link from 'next/link';
-import { useState } from 'react';
 import Image from 'next/image';
 import { ShoppingCart } from "lucide-react"
+import useCartStore from '@/store/userCartStore';
 
 
 export default function Navbar() {
+
+  const {cartCount, addToCart} = useCartStore()
 
   return (
     <nav className="mx-32 bg-white p-2 my-4 rounded-md flex items-center justify-between ">
@@ -38,7 +40,12 @@ export default function Navbar() {
           Register
         </Link>
         <Link href="/cart" className="text-green">
-        <ShoppingCart size={34} />
+          <ShoppingCart size={34} />
+          {
+            cartCount > 0 && (
+              <span className='bg-red-500 rounded-full px-2 relative bottom-10 left-5'>{cartCount}</span>
+            )
+          }
         </Link>
       </div>
 
