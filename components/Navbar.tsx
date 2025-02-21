@@ -15,7 +15,7 @@ export default function Navbar() {
       {/* Navbar */}
       <nav className="fixed top-0 left-0 w-full bg-white shadow-md z-50">
         <div className="max-w-[1200px] w-full px-4 md:px-32 flex items-center justify-between py-3 mx-auto">
-          
+
           {/* Logo */}
           <Link href="/">
             <Image

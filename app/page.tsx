@@ -1,4 +1,3 @@
-import Navbar from "@/components/Navbar";
 import Card from "@/components/ui/Card";
 import { Slider } from "@/components/ui/carousel";
 import Image from "next/image";
@@ -15,6 +14,7 @@ const card_images : string[] = [
 export default function Home() {
   return (
     <div className="md:mx-32 mx-8 mt-20">
+
       <div className="slider">
         <Slider />
       </div>

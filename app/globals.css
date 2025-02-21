@@ -10,22 +10,22 @@ head,body{
 /* for the scroll bar */
 /* Apply a custom scrollbar to the entire page */
 ::-webkit-scrollbar {
-  width: 10px;
+  width: 4px;
   /* Width of the scrollbar */
-  height: 10px;
+  height: 5px;
   /* Height of horizontal scrollbar */
 }
 
 ::-webkit-scrollbar-track {
   background: #f1f1f1;
   /* Light background for the track */
-  border-radius: 10px;
+  border-radius: 5px;
 }
 
 ::-webkit-scrollbar-thumb {
   background: #888;
   /* Color of the scrollbar thumb */
-  border-radius: 10px;
+  border-radius: 5px;
   transition: background-color 0.3s ease;
 }
 
