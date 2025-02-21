@@ -37,8 +37,8 @@ export default function Navbar() {
         <Link href="/register" className="text-white font-semibold bg-[#1FB271] px-4 py-2 rounded-md hover:bg-green-700">
           Register
         </Link>
-        <Link href="/cart" className="text-green hover:text-gray-100">
-        <ShoppingCart size={34}/>
+        <Link href="/cart" className="text-green">
+        <ShoppingCart size={34} />
         </Link>
       </div>
 

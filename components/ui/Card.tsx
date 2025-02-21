@@ -1,3 +1,5 @@
+'use client'
+
 import React from 'react'
 import Image from 'next/image'
 import { ShoppingCart, Heart } from 'lucide-react'
@@ -5,6 +7,15 @@ import Link from 'next/link'
 
 
 const Card = ({ image_path }: { image_path: string }) => {
+
+  //add the cart to the backend
+  const cartClicked = async () => {
+    const response = await fetch("http://127.0.0.1:8000/api/cart")
+    const data = await response.json()
+    console.log(data)
+  }
+
+
   return (
     <div className='border-2 mt-10 h-70 w-64 rounded-sm flex flex-col justify-between items-center gap-2'>
       <Image
@@ -12,6 +23,7 @@ const Card = ({ image_path }: { image_path: string }) => {
         alt="Cards.png"
         width={100}
         height={200}
+        // style={{ width: "auto", height: "auto" }}
         className='rounded-md object-cover h-[200px] w-[250px]'
       />
 
@@ -19,7 +31,14 @@ const Card = ({ image_path }: { image_path: string }) => {
       <div className="flex justify-between border-t-2 w-full p-4">
         <div className="price">price</div>
         <div className="card_whilist flex gap-3">
-          <Link href='/cart'><ShoppingCart /></Link>
+
+
+          <Link href='/cart'>
+          <button onClick={cartClicked}>
+            <ShoppingCart />
+          </button>
+          </Link>
+
           <Link href='/cart'><Heart /></Link>
         </div>
       </div>
