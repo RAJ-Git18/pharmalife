@@ -39,7 +39,10 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'corsheaders',
     'login',
+    'accounts'
+    
 ]
+AUTH_USER_MODEL = 'accounts.CustomUser'
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",  # Frontend URL (React/Next.js)
