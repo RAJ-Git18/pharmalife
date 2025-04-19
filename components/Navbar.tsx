@@ -5,7 +5,6 @@ import Image from 'next/image';
 import { ShoppingCart, Menu } from "lucide-react";
 import { useState } from 'react';
 import useCartStore from '@/store/userCartStore';
-
 export default function Navbar() {
   const { cartCount } = useCartStore();
   const [menuOpen, setMenuOpen] = useState(false);
@@ -41,9 +40,6 @@ export default function Navbar() {
               placeholder="Search..."
               className="px-4 py-2 rounded-md bg-gray-200 text-black"
             />
-            <Link href="/register" className="text-white font-semibold bg-[#1FB271] px-4 py-2 rounded-md hover:bg-green-700">
-              Register
-            </Link>
             <Link href="/cart" className="relative">
               <ShoppingCart size={34} className="text-green" />
               {cartCount > 0 && (
@@ -72,9 +68,7 @@ export default function Navbar() {
               placeholder="Search..."
               className="px-4 py-2 rounded-md bg-gray-200 text-black w-3/4"
             />
-            <Link href="/register" className="text-white font-semibold bg-[#1FB271] px-4 py-2 rounded-md hover:bg-green-700">
-              Register
-            </Link>
+           
           </div>
         )}
       </nav>

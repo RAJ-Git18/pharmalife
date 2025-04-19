@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     "corsheaders",
     "rest_framework",
     "login",
+    "accounts",
 ]
 
 MIDDLEWARE = [
@@ -116,7 +117,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
+AUTH_USER_MODEL = 'accounts.CustomUser'
 # Internationalization
 # https://docs.djangoproject.com/en/5.2/topics/i18n/
 
