@@ -13,7 +13,8 @@ class LoginView(APIView):
         if serializer.is_valid():
             return Response(
                 {
-                    "message": "Login successful!"
+                    "message": "Login successful!",
+                    "tokens" : serializer.validated_data
                 }
             )
         return Response({"message": "Username or password is incorrect"})
