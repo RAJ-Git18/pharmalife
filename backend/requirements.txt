@@ -1,8 +1,0 @@
-Django
-djangorestframework
-djangorestframework-simplejwt
-psycopg2
-python-dotenv
-django-cors-headers
-
-
