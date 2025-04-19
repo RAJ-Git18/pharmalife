@@ -55,9 +55,17 @@ MIDDLEWARE = [
 ]
 
 AUTHENTICATION_BACKENDS = [
-    "django.contrib.auth.backends.ModelBackend",
     "login.email_auth.EmailAuthentication",
+    "django.contrib.auth.backends.ModelBackend",
 ]
+
+
+# simple jwt tokens
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    )
+}
 
 ROOT_URLCONF = 'Pharmalife_Project.urls'
 

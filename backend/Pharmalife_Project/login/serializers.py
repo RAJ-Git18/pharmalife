@@ -1,5 +1,7 @@
 from rest_framework import serializers  
 from django.contrib.auth import authenticate
+from rest_framework_simplejwt.tokens import RefreshToken
+
 
 class LoginSerializer(serializers.Serializer):
     email = serializers.EmailField(required=True)
@@ -13,4 +15,9 @@ class LoginSerializer(serializers.Serializer):
            user = authenticate(email=email, password=password)
            if user is None:
               raise serializers.ValidationError("Invalid email or password")
-           print("the authentication was successful")
+
+           data['refresh'] = RefreshToken.for_user(user)
+           data['access'] = RefreshToken.for_user(user).access_token
+           data['isadmin'] = user.is_superuser
+
+           return data
