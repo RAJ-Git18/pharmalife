@@ -17,10 +17,8 @@ class RegisterAPI(generics.GenericAPIView):
         user = serializer.save()
         
         # Create token for the new user
-        token, created = Token.objects.get_or_create(user=user)
         
         return Response({
             "user": UserSerializer(user, context=self.get_serializer_context()).data,
-            "token": token.key,  # Include the token in response
             "message": "User created successfully",
         }, status=status.HTTP_201_CREATED)
