@@ -5,8 +5,14 @@ import Image from 'next/image';
 import { ShoppingCart, Menu, X } from "lucide-react";
 import { useState } from 'react';
 import useCartStore from '@/store/userCartStore';
+import { FcGoogle } from 'react-icons/fc';
 
-interface FormData {
+interface LoginData {
+  email: string;
+  password: string;
+}
+
+interface SignupData {
   name: string;
   email: string;
   password: string;
@@ -25,22 +31,29 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
   const [showAuthForm, setShowAuthForm] = useState<boolean>(false);
   const [isLogin, setIsLogin] = useState<boolean>(true);
-  const [formData, setFormData] = useState<FormData>({
+
+  // Separate state for login and signup
+  const [loginData, setLoginData] = useState<LoginData>({
+    email: '',
+    password: ''
+  });
+
+  const [signupData, setSignupData] = useState<SignupData>({
     name: '',
     email: '',
     password: '',
     confirmPassword: ''
   });
+
   const [errors, setErrors] = useState<FormErrors>({});
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleLoginChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
-    setFormData({
-      ...formData,
+    setLoginData({
+      ...loginData,
       [name]: value
     });
-    
-    // Clear error when user types
+
     if (errors[name as keyof FormErrors]) {
       setErrors({
         ...errors,
@@ -49,66 +62,119 @@ export default function Navbar() {
     }
   };
 
-  const validateForm = (): boolean => {
+  const handleSignupChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setSignupData({
+      ...signupData,
+      [name]: value
+    });
+
+    if (errors[name as keyof FormErrors]) {
+      setErrors({
+        ...errors,
+        [name]: ''
+      });
+    }
+  };
+
+  const validateLogin = (): boolean => {
     let valid = true;
     const newErrors: FormErrors = {};
 
-    // Email validation
-    if (!formData.email) {
+    if (!loginData.email) {
       newErrors.email = 'Email is required';
       valid = false;
-    } else if (!/^\S+@\S+\.\S+$/.test(formData.email)) {
+    } else if (!/^\S+@\S+\.\S+$/.test(loginData.email)) {
       newErrors.email = 'Email is invalid';
       valid = false;
     }
 
-    // Password validation
-    if (!formData.password) {
+    if (!loginData.password) {
       newErrors.password = 'Password is required';
       valid = false;
-    } else if (formData.password.length < 6) {
+    } else if (loginData.password.length < 6) {
       newErrors.password = 'Password must be at least 6 characters';
       valid = false;
-    }
-
-    // Signup specific validations
-    if (!isLogin) {
-      if (!formData.name) {
-        newErrors.name = 'Name is required';
-        valid = false;
-      }
-
-      if (!formData.confirmPassword) {
-        newErrors.confirmPassword = 'Please confirm your password';
-        valid = false;
-      } else if (formData.password !== formData.confirmPassword) {
-        newErrors.confirmPassword = 'Passwords do not match';
-        valid = false;
-      }
     }
 
     setErrors(newErrors);
     return valid;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const validateSignup = (): boolean => {
+    let valid = true;
+    const newErrors: FormErrors = {};
+
+    if (!signupData.name) {
+      newErrors.name = 'Name is required';
+      valid = false;
+    }
+
+    if (!signupData.email) {
+      newErrors.email = 'Email is required';
+      valid = false;
+    } else if (!/^\S+@\S+\.\S+$/.test(signupData.email)) {
+      newErrors.email = 'Email is invalid';
+      valid = false;
+    }
+
+    if (!signupData.password) {
+      newErrors.password = 'Password is required';
+      valid = false;
+    } else if (signupData.password.length < 6) {
+      newErrors.password = 'Password must be at least 6 characters';
+      valid = false;
+    }
+
+    if (!signupData.confirmPassword) {
+      newErrors.confirmPassword = 'Please confirm your password';
+      valid = false;
+    } else if (signupData.password !== signupData.confirmPassword) {
+      newErrors.confirmPassword = 'Passwords do not match';
+      valid = false;
+    }
+
+    setErrors(newErrors);
+    return valid;
+  };
+
+  const handleLoginSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (validateForm()) {
-      // Handle form submission
-      console.log('Form submitted:', formData);
-      // Add your API call here
-      // setShowAuthForm(false); // Close form after successful submission
+    if (validateLogin()) {
+      console.log('Login submitted:', loginData);
+      // Add your login API call here
     }
   };
 
-  const resetForm = () => {
-    setFormData({
+  const handleSignupSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (validateSignup()) {
+      console.log('Signup submitted:', signupData);
+      // Add your signup API call here
+    }
+  };
+
+  const handleGoogleSignIn = () => {
+    console.log('Signing in with Google');
+    // Implement Google sign-in logic here
+  };
+
+  const resetForms = () => {
+    setLoginData({ email: '', password: '' });
+    setSignupData({
       name: '',
       email: '',
       password: '',
       confirmPassword: ''
     });
     setErrors({});
+  };
+
+  const toggleAuthForm = () => {
+    setShowAuthForm(!showAuthForm);
+    if (!showAuthForm) {
+      resetForms();
+    }
   };
 
   return (
@@ -149,8 +215,8 @@ export default function Navbar() {
                 </span>
               )}
             </Link>
-            <button 
-              onClick={() => setShowAuthForm(!showAuthForm)}
+            <button
+              onClick={toggleAuthForm}
               className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors"
             >
               {showAuthForm ? 'Close' : 'Login'}
@@ -175,9 +241,9 @@ export default function Navbar() {
               placeholder="Search..."
               className="px-4 py-2 rounded-md bg-gray-200 text-black w-3/4"
             />
-            <button 
+            <button
               onClick={() => {
-                setShowAuthForm(!showAuthForm);
+                toggleAuthForm();
                 setMenuOpen(false);
               }}
               className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 w-3/4"
@@ -194,17 +260,14 @@ export default function Navbar() {
           <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-xl font-bold">{isLogin ? 'Login' : 'Sign Up'}</h2>
-              <button 
-                onClick={() => {
-                  setShowAuthForm(false);
-                  resetForm();
-                }}
+              <button
+                onClick={toggleAuthForm}
                 className="text-gray-500 hover:text-gray-700"
               >
                 <X size={24} />
               </button>
             </div>
-            
+
             <div className="flex border-b mb-4">
               <button
                 onClick={() => {
@@ -227,14 +290,14 @@ export default function Navbar() {
             </div>
 
             {isLogin ? (
-              <form onSubmit={handleSubmit} className="space-y-4">
+              <form onSubmit={handleLoginSubmit} className="space-y-4">
                 <div>
                   <label className="block text-sm font-medium mb-1">Email</label>
                   <input
                     type="email"
                     name="email"
-                    value={formData.email}
-                    onChange={handleInputChange}
+                    value={loginData.email}
+                    onChange={handleLoginChange}
                     className={`w-full px-3 py-2 border rounded-md ${errors.email ? 'border-red-500' : ''}`}
                     required
                   />
@@ -245,8 +308,8 @@ export default function Navbar() {
                   <input
                     type="password"
                     name="password"
-                    value={formData.password}
-                    onChange={handleInputChange}
+                    value={loginData.password}
+                    onChange={handleLoginChange}
                     className={`w-full px-3 py-2 border rounded-md ${errors.password ? 'border-red-500' : ''}`}
                     required
                   />
@@ -260,62 +323,78 @@ export default function Navbar() {
                 </button>
               </form>
             ) : (
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div>
-                  <label className="block text-sm font-medium mb-1">Full Name</label>
-                  <input
-                    type="text"
-                    name="name"
-                    value={formData.name}
-                    onChange={handleInputChange}
-                    className={`w-full px-3 py-2 border rounded-md ${errors.name ? 'border-red-500' : ''}`}
-                    required
-                  />
-                  {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
+              <>
+                <form onSubmit={handleSignupSubmit} className="space-y-4">
+                  <div>
+                    <label className="block text-sm font-medium mb-1">Full Name</label>
+                    <input
+                      type="text"
+                      name="name"
+                      value={signupData.name}
+                      onChange={handleSignupChange}
+                      className={`w-full px-3 py-2 border rounded-md ${errors.name ? 'border-red-500' : ''}`}
+                      required
+                    />
+                    {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium mb-1">Email</label>
+                    <input
+                      type="email"
+                      name="email"
+                      value={signupData.email}
+                      onChange={handleSignupChange}
+                      className={`w-full px-3 py-2 border rounded-md ${errors.email ? 'border-red-500' : ''}`}
+                      required
+                    />
+                    {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium mb-1">Password</label>
+                    <input
+                      type="password"
+                      name="password"
+                      value={signupData.password}
+                      onChange={handleSignupChange}
+                      className={`w-full px-3 py-2 border rounded-md ${errors.password ? 'border-red-500' : ''}`}
+                      required
+                    />
+                    {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password}</p>}
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium mb-1">Confirm Password</label>
+                    <input
+                      type="password"
+                      name="confirmPassword"
+                      value={signupData.confirmPassword}
+                      onChange={handleSignupChange}
+                      className={`w-full px-3 py-2 border rounded-md ${errors.confirmPassword ? 'border-red-500' : ''}`}
+                      required
+                    />
+                    {errors.confirmPassword && <p className="text-red-500 text-xs mt-1">{errors.confirmPassword}</p>}
+                  </div>
+                  <button
+                    type="submit"
+                    className="w-full bg-green-600 text-white py-2 rounded-md hover:bg-green-700"
+                  >
+                    Sign Up
+                  </button>
+                </form>
+
+                <div className="relative flex items-center py-4">
+                  <div className="flex-grow border-t border-gray-300"></div>
+                  <span className="flex-shrink mx-4 text-gray-500">or</span>
+                  <div className="flex-grow border-t border-gray-300"></div>
                 </div>
-                <div>
-                  <label className="block text-sm font-medium mb-1">Email</label>
-                  <input
-                    type="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleInputChange}
-                    className={`w-full px-3 py-2 border rounded-md ${errors.email ? 'border-red-500' : ''}`}
-                    required
-                  />
-                  {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
-                </div>
-                <div>
-                  <label className="block text-sm font-medium mb-1">Password</label>
-                  <input
-                    type="password"
-                    name="password"
-                    value={formData.password}
-                    onChange={handleInputChange}
-                    className={`w-full px-3 py-2 border rounded-md ${errors.password ? 'border-red-500' : ''}`}
-                    required
-                  />
-                  {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password}</p>}
-                </div>
-                <div>
-                  <label className="block text-sm font-medium mb-1">Confirm Password</label>
-                  <input
-                    type="password"
-                    name="confirmPassword"
-                    value={formData.confirmPassword}
-                    onChange={handleInputChange}
-                    className={`w-full px-3 py-2 border rounded-md ${errors.confirmPassword ? 'border-red-500' : ''}`}
-                    required
-                  />
-                  {errors.confirmPassword && <p className="text-red-500 text-xs mt-1">{errors.confirmPassword}</p>}
-                </div>
+
                 <button
-                  type="submit"
-                  className="w-full bg-green-600 text-white py-2 rounded-md hover:bg-green-700"
+                  onClick={handleGoogleSignIn}
+                  className="w-full flex items-center justify-center gap-2 py-2 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
                 >
-                  Sign Up
+                  <FcGoogle size={20} />
+                  <span>Sign up with Google</span>
                 </button>
-              </form>
+              </>
             )}
           </div>
         </div>
