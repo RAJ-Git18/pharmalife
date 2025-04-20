@@ -2,19 +2,120 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { ShoppingCart, Menu } from "lucide-react";
+import { ShoppingCart, Menu, X } from "lucide-react";
 import { useState } from 'react';
 import useCartStore from '@/store/userCartStore';
+
+interface FormData {
+  name: string;
+  email: string;
+  password: string;
+  confirmPassword: string;
+}
+
+interface FormErrors {
+  name?: string;
+  email?: string;
+  password?: string;
+  confirmPassword?: string;
+}
+
 export default function Navbar() {
   const { cartCount } = useCartStore();
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState<boolean>(false);
+  const [showAuthForm, setShowAuthForm] = useState<boolean>(false);
+  const [isLogin, setIsLogin] = useState<boolean>(true);
+  const [formData, setFormData] = useState<FormData>({
+    name: '',
+    email: '',
+    password: '',
+    confirmPassword: ''
+  });
+  const [errors, setErrors] = useState<FormErrors>({});
+
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData({
+      ...formData,
+      [name]: value
+    });
+    
+    // Clear error when user types
+    if (errors[name as keyof FormErrors]) {
+      setErrors({
+        ...errors,
+        [name]: ''
+      });
+    }
+  };
+
+  const validateForm = (): boolean => {
+    let valid = true;
+    const newErrors: FormErrors = {};
+
+    // Email validation
+    if (!formData.email) {
+      newErrors.email = 'Email is required';
+      valid = false;
+    } else if (!/^\S+@\S+\.\S+$/.test(formData.email)) {
+      newErrors.email = 'Email is invalid';
+      valid = false;
+    }
+
+    // Password validation
+    if (!formData.password) {
+      newErrors.password = 'Password is required';
+      valid = false;
+    } else if (formData.password.length < 6) {
+      newErrors.password = 'Password must be at least 6 characters';
+      valid = false;
+    }
+
+    // Signup specific validations
+    if (!isLogin) {
+      if (!formData.name) {
+        newErrors.name = 'Name is required';
+        valid = false;
+      }
+
+      if (!formData.confirmPassword) {
+        newErrors.confirmPassword = 'Please confirm your password';
+        valid = false;
+      } else if (formData.password !== formData.confirmPassword) {
+        newErrors.confirmPassword = 'Passwords do not match';
+        valid = false;
+      }
+    }
+
+    setErrors(newErrors);
+    return valid;
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (validateForm()) {
+      // Handle form submission
+      console.log('Form submitted:', formData);
+      // Add your API call here
+      // setShowAuthForm(false); // Close form after successful submission
+    }
+  };
+
+  const resetForm = () => {
+    setFormData({
+      name: '',
+      email: '',
+      password: '',
+      confirmPassword: ''
+    });
+    setErrors({});
+  };
 
   return (
     <>
       {/* Navbar */}
       <nav className="fixed top-0 left-0 w-full bg-white shadow-md z-50">
         <div className="max-w-[1200px] w-full px-4 md:px-32 flex items-center justify-between py-3 mx-auto">
-
           {/* Logo */}
           <Link href="/">
             <Image
@@ -48,30 +149,177 @@ export default function Navbar() {
                 </span>
               )}
             </Link>
+            <button 
+              onClick={() => setShowAuthForm(!showAuthForm)}
+              className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors"
+            >
+              {showAuthForm ? 'Close' : 'Login'}
+            </button>
           </div>
 
           {/* Mobile Menu Button */}
           <button className="md:hidden" onClick={() => setMenuOpen(!menuOpen)}>
-            <Menu size={28} />
+            {menuOpen ? <X size={28} /> : <Menu size={28} />}
           </button>
         </div>
 
         {/* Mobile Menu */}
         {menuOpen && (
           <div className="absolute top-[64px] left-0 w-full bg-white shadow-md flex flex-col items-center py-4 space-y-4 md:hidden">
-            <Link href="/" className="text-black font-semibold hover:text-gray-400">Home</Link>
-            <Link href="/about" className="text-black font-semibold hover:text-gray-400">About</Link>
-            <Link href="/shop" className="text-black font-semibold hover:text-gray-400">Shop</Link>
-            <Link href="/contact" className="text-black font-semibold hover:text-gray-400">Contact</Link>
+            <Link href="/" className="text-black font-semibold hover:text-gray-400" onClick={() => setMenuOpen(false)}>Home</Link>
+            <Link href="/about" className="text-black font-semibold hover:text-gray-400" onClick={() => setMenuOpen(false)}>About</Link>
+            <Link href="/shop" className="text-black font-semibold hover:text-gray-400" onClick={() => setMenuOpen(false)}>Shop</Link>
+            <Link href="/contact" className="text-black font-semibold hover:text-gray-400" onClick={() => setMenuOpen(false)}>Contact</Link>
             <input
               type="text"
               placeholder="Search..."
               className="px-4 py-2 rounded-md bg-gray-200 text-black w-3/4"
             />
-           
+            <button 
+              onClick={() => {
+                setShowAuthForm(!showAuthForm);
+                setMenuOpen(false);
+              }}
+              className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 w-3/4"
+            >
+              {showAuthForm ? 'Close' : 'Login/Signup'}
+            </button>
           </div>
         )}
       </nav>
+
+      {/* Authentication Form */}
+      {showAuthForm && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 mt-0">
+          <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-md">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-xl font-bold">{isLogin ? 'Login' : 'Sign Up'}</h2>
+              <button 
+                onClick={() => {
+                  setShowAuthForm(false);
+                  resetForm();
+                }}
+                className="text-gray-500 hover:text-gray-700"
+              >
+                <X size={24} />
+              </button>
+            </div>
+            
+            <div className="flex border-b mb-4">
+              <button
+                onClick={() => {
+                  setIsLogin(true);
+                  setErrors({});
+                }}
+                className={`flex-1 py-2 ${isLogin ? 'border-b-2 border-green-600 font-medium' : 'text-gray-500'}`}
+              >
+                Login
+              </button>
+              <button
+                onClick={() => {
+                  setIsLogin(false);
+                  setErrors({});
+                }}
+                className={`flex-1 py-2 ${!isLogin ? 'border-b-2 border-green-600 font-medium' : 'text-gray-500'}`}
+              >
+                Sign Up
+              </button>
+            </div>
+
+            {isLogin ? (
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium mb-1">Email</label>
+                  <input
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    className={`w-full px-3 py-2 border rounded-md ${errors.email ? 'border-red-500' : ''}`}
+                    required
+                  />
+                  {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1">Password</label>
+                  <input
+                    type="password"
+                    name="password"
+                    value={formData.password}
+                    onChange={handleInputChange}
+                    className={`w-full px-3 py-2 border rounded-md ${errors.password ? 'border-red-500' : ''}`}
+                    required
+                  />
+                  {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password}</p>}
+                </div>
+                <button
+                  type="submit"
+                  className="w-full bg-green-600 text-white py-2 rounded-md hover:bg-green-700"
+                >
+                  Login
+                </button>
+              </form>
+            ) : (
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <div>
+                  <label className="block text-sm font-medium mb-1">Full Name</label>
+                  <input
+                    type="text"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleInputChange}
+                    className={`w-full px-3 py-2 border rounded-md ${errors.name ? 'border-red-500' : ''}`}
+                    required
+                  />
+                  {errors.name && <p className="text-red-500 text-xs mt-1">{errors.name}</p>}
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1">Email</label>
+                  <input
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleInputChange}
+                    className={`w-full px-3 py-2 border rounded-md ${errors.email ? 'border-red-500' : ''}`}
+                    required
+                  />
+                  {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1">Password</label>
+                  <input
+                    type="password"
+                    name="password"
+                    value={formData.password}
+                    onChange={handleInputChange}
+                    className={`w-full px-3 py-2 border rounded-md ${errors.password ? 'border-red-500' : ''}`}
+                    required
+                  />
+                  {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password}</p>}
+                </div>
+                <div>
+                  <label className="block text-sm font-medium mb-1">Confirm Password</label>
+                  <input
+                    type="password"
+                    name="confirmPassword"
+                    value={formData.confirmPassword}
+                    onChange={handleInputChange}
+                    className={`w-full px-3 py-2 border rounded-md ${errors.confirmPassword ? 'border-red-500' : ''}`}
+                    required
+                  />
+                  {errors.confirmPassword && <p className="text-red-500 text-xs mt-1">{errors.confirmPassword}</p>}
+                </div>
+                <button
+                  type="submit"
+                  className="w-full bg-green-600 text-white py-2 rounded-md hover:bg-green-700"
+                >
+                  Sign Up
+                </button>
+              </form>
+            )}
+          </div>
+        </div>
+      )}
 
       {/* Prevent Content Overlap */}
       <div className="mt-[64px]"></div>
