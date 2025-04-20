@@ -95,7 +95,7 @@ export default function Navbar() {
       newErrors.password = 'Password is required';
       valid = false;
     } else if (loginData.password.length < 6) {
-      newErrors.password = 'Password must be at least 6 characters';
+      newErrors.password = 'Incorrect password';
       valid = false;
     }
 
@@ -166,13 +166,63 @@ export default function Navbar() {
   }
 
 
-    const handleSignupSubmit = (e: React.FormEvent) => {
-      e.preventDefault();
-      if (validateSignup()) {
-        console.log('Signup submitted:', signupData);
-        // Add your signup API call here
+  const handleSignupSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!validateSignup()) return;
+  
+    try {
+      const registrationData = {
+        username: signupData.name,  
+        email: signupData.email,
+        password: signupData.password,
+
+      };
+  
+      const response = await axios.post(
+        "http://localhost:8000/accounts/register/",  // Your Django registration endpoint
+        registrationData,
+        {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        }
+      );
+  
+      console.log("Registration successful:", response.data);
+      
+      // Optional: Automatically log the user in after registration
+      
+      
+      // Close the auth form after successful registration
+      setShowAuthForm(false);
+      resetForms();
+  
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        // Handle backend validation errors
+        if (error.response) {
+          const backendErrors = error.response.data;
+          const formattedErrors: FormErrors = {};
+          
+          // Map backend errors to form fields
+          if (backendErrors.email) {
+            formattedErrors.email = backendErrors.email.join(' ');
+          }
+          if (backendErrors.username) {
+            formattedErrors.name = backendErrors.username.join(' ');
+          }
+          if (backendErrors.password) {
+            formattedErrors.password = backendErrors.password.join(' ');
+          }
+          
+          setErrors(formattedErrors);
+        }
+        console.error("Registration failed:", error.response?.data);
+      } else {
+        console.error("Unexpected error:", error);
       }
-    };
+    }
+  };
 
     const handleGoogleSignIn = () => {
       console.log('Signing in with Google');
@@ -346,7 +396,7 @@ export default function Navbar() {
                 <>
                   <form onSubmit={handleSignupSubmit} className="space-y-4">
                     <div>
-                      <label className="block text-sm font-medium mb-1">Full Name</label>
+                      <label className="block text-sm font-medium mb-1">Username</label>
                       <input
                         type="text"
                         name="name"
