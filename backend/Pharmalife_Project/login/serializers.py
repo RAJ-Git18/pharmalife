@@ -20,4 +20,6 @@ class LoginSerializer(serializers.Serializer):
            data['access'] = RefreshToken.for_user(user).access_token
            data['isadmin'] = user.is_superuser
 
+         #   print(data)
+
            return data
