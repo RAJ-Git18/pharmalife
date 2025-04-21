@@ -26,7 +26,7 @@ export default function AdminLayout({
         </aside>
 
         {/* Main Content */}
-        <main className="w-4/5 p-6 bg-red-500">
+        <main className="w-4/5 p-6">
           {children}
         </main>
       </div>
