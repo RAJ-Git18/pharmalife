@@ -11,6 +11,7 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
 
   return (
     <div className="min-h-screen flex flex-col">
+      <Navbar/>
       {!isAdmin && <Navbar />}
       <main className={`flex-1 ${isAdmin ? "" : "px-4 md:px-10 py-4"}`}>
         {children}
@@ -19,3 +20,4 @@ export default function LayoutWrapper({ children }: { children: React.ReactNode 
     </div>
   );
 }
+
