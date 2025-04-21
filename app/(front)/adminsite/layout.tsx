@@ -1,33 +1,35 @@
-// app/admin/layout.tsx
-import React from 'react';
+import Link from "next/link";
 
-const AdminLayout = ({ children }: { children: React.ReactNode }) => {
-    return (
-        <div style={{ display: 'flex', height: '100vh' }}>
-            {/* Sidebar */}
-            <div
-                style={{
-                    width: '250px',
-                    backgroundColor: '#333',
-                    color: 'white',
-                    padding: '20px',
-                }}
-            >
-                <h2>Admin Dashboard</h2>
-                <ul>
-                    <li><a href="/admin/dashboard" style={{ color: 'white' }}>Dashboard</a></li>
-                    <li><a href="/admin/users" style={{ color: 'white' }}>Users</a></li>
-                    <li><a href="/admin/settings" style={{ color: 'white' }}>Settings</a></li>
-                </ul>
-            </div>
+export default function AdminLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
+  return (
 
-            {/* Main Content */}
-            <div style={{ flex: 1, padding: '20px', overflowY: 'auto' }}>
-                {/* The content of the page will be injected here */}
-                {children}
-            </div>
-        </div>
-    );
-};
+    <div className="flex flex-col min-h-screen bg-gray-100 text-black">
+      {/* Main Section */}
+      <div className="flex flex-1 text-black">
+        {/* Sidebar */}
+        <aside className="w-1/5 bg-white shadow-md px-4 py-6 space-y-4">
+          <nav className="flex flex-col space-y-2">
+            <Link href="/adminsite/dashboard" className="text-gray-700 hover:text-green-600">
+              Dashboard
+            </Link>
+            <Link href="/adminsite/products" className="text-gray-700 hover:text-green-600">
+              Products
+            </Link>
+            <Link href="/adminsite/users" className="text-gray-700 hover:text-green-600">
+              Users
+            </Link>
+          </nav>
+        </aside>
 
-export default AdminLayout;
+        {/* Main Content */}
+        <main className="w-4/5 p-6 bg-red-500">
+          {children}
+        </main>
+      </div>
+    </div>
+  );
+}
