@@ -14,7 +14,7 @@ const page = () => {
           <TotalOrders/>
         </div>
       </div>
-      <div className="bg-yellow-200 h-96 w-full rounded-lg">
+      <div className="bg-white h-96 w-full rounded-lg">
         <TotalSales/>
       </div>
     </div>

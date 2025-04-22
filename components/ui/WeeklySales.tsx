@@ -1,7 +1,5 @@
 'use client'
 
-import { list } from 'postcss'
-import { List } from 'postcss/lib/list'
 import React from 'react'
 import { useEffect, useState } from 'react'
 import {
@@ -22,7 +20,7 @@ const data = [
   { "day": "Saturday", "sales": 4500 }
 ]
 
-const [WeeklySalesData, setWeeklySalesData] = useState([])
+// const [WeeklySalesData, setWeeklySalesData] = useState([])
 
 const CustomTooltip = ({ active, payload }: any) => {
   if (active && payload && payload.length) {
@@ -41,9 +39,9 @@ const CustomTooltip = ({ active, payload }: any) => {
 
 const WeeklySales = () => {
 
-  useEffect(() => {
-    const response = 
-  }, [])
+  // useEffect(() => {
+  //   const response = 
+  // }, [])
 
 
   return (
