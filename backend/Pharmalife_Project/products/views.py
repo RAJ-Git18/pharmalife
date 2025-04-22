@@ -3,21 +3,22 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
 from django.http import Http404
+from rest_framework.parsers import MultiPartParser, FormParser
 
 from .models import Product
 from .serializers import ProductSerializer
 
 
 class ProductListCreateAPIView(APIView):
-    # No permission restrictions — public access
-
+    parser_classes = [MultiPartParser, FormParser]
+    
     def get(self, request):
-        products = Product.objects.filter(is_active=True)
-        serializer = ProductSerializer(products, many=True)
+        products = Product.objects.filter(stock__gt=1)
+        serializer = ProductSerializer(products, many=True, context={'request': request})
         return Response(serializer.data)
 
     def post(self, request):
-        serializer = ProductSerializer(data=request.data)
+        serializer = ProductSerializer(data=request.data, context={'request': request})
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -25,8 +26,8 @@ class ProductListCreateAPIView(APIView):
 
 
 class RetrieveDeleteUpdateView(APIView):
-    # No permission restrictions — public access
-
+    parser_classes = [MultiPartParser, FormParser]
+    
     def get_object(self, pk):
         try:
             return Product.objects.get(pk=pk)
@@ -35,12 +36,12 @@ class RetrieveDeleteUpdateView(APIView):
 
     def get(self, request, pk):
         product = self.get_object(pk)
-        serializer = ProductSerializer(product)
+        serializer = ProductSerializer(product, context={'request': request})
         return Response(serializer.data)
 
     def put(self, request, pk):
         product = self.get_object(pk)
-        serializer = ProductSerializer(product, data=request.data)
+        serializer = ProductSerializer(product, data=request.data, context={'request': request})
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
@@ -48,7 +49,7 @@ class RetrieveDeleteUpdateView(APIView):
 
     def patch(self, request, pk):
         product = self.get_object(pk)
-        serializer = ProductSerializer(product, data=request.data, partial=True)
+        serializer = ProductSerializer(product, data=request.data, partial=True, context={'request': request})
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data)
