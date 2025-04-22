@@ -41,7 +41,6 @@ INSTALLED_APPS = [
     "rest_framework",
     "login",
     "accounts",
-    "orders",
     "rest_framework.authtoken"
 ]
 
@@ -66,7 +65,13 @@ AUTHENTICATION_BACKENDS = [
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
-    )
+    ),
+     'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticatedOrReadOnly',
+    ],
 }
 
 ROOT_URLCONF = 'Pharmalife_Project.urls'
