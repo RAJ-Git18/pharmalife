@@ -7,7 +7,7 @@ export default function AdminLayout({
 }) {
   return (
 
-    <div className="flex flex-col min-h-screen bg-gray-100 text-black">
+    <div className="flex flex-col max-h-screen bg-gray-100 text-black">
       {/* Main Section */}
       <div className="flex flex-1 text-black">
         {/* Sidebar */}
@@ -26,7 +26,7 @@ export default function AdminLayout({
         </aside>
 
         {/* Main Content */}
-        <main className="w-4/5 p-6">
+        <main className="w-4/5 p-6 mx-10 mt-4">
           {children}
         </main>
       </div>
