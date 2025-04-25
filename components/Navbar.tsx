@@ -154,22 +154,26 @@ export default function Navbar() {
     try {
       const response = await axios.post("http://127.0.0.1:8000/api/login/", loginData,
         {
-          withCredentials: true,
           headers: {
             'Content-Type': 'application/json'
           }
         }
       );
 
+      //now save the tokens to the local storage
+      localStorage.setItem('access', response.data.access)
+      localStorage.setItem('refresh', response.data.refresh)
+
       console.log("Login response", response.data)
 
 
       if (response.data.message === "Login successful") {
         if (response.data.isadmin) {
-          // router.push('/adminsite/dashboard')
+          router.push('/adminsite/dashboard')
           setShowAuthForm(false)
         }
         else {
+          router.push('/')
           setShowAuthForm(false)
         }
       }
