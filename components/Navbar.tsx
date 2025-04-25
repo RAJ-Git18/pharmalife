@@ -166,7 +166,7 @@ export default function Navbar() {
 
       if (response.data.message === "Login successful") {
         if (response.data.isadmin) {
-          router.push('/adminsite/dashboard')
+          // router.push('/adminsite/dashboard')
           setShowAuthForm(false)
         }
         else {

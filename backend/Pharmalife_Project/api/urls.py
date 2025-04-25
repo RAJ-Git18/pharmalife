@@ -12,6 +12,5 @@ urlpatterns = [
     path("login/", LoginView.as_view(), name="login"),
     path("register/", RegisterAPI.as_view(), name="register"),
     path("orders/", OrdersView.as_view(), name="orders"),
-    path("token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
-   
+    path("token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),   
 ]
