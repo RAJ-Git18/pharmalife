@@ -8,7 +8,7 @@ import { useState } from 'react';
 import useCartStore from '@/store/userCartStore';
 import { FcGoogle } from 'react-icons/fc';
 import { useRouter } from 'next/navigation';
-
+import GoogleSignIn from './GoogleSignIn';
 
 interface LoginData {
   email: string;
@@ -476,7 +476,7 @@ export default function Navbar() {
                   className="w-full flex items-center justify-center gap-2 py-2 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
                 >
                   <FcGoogle size={20} />
-                  <span>Sign up with Google</span>
+                  <span><GoogleSignIn/></span>
                 </button>
               </>
             )}

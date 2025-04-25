@@ -114,17 +114,21 @@ const ProductsPage: React.FC = () => {
   };
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container mx-auto p-4  bg-white rounded-lg ">
+      <div className='flex justify-between'><div>      
       <h1 className='text-2xl mb-10'>Products</h1>
-      <div className='flex justify-between mb-6'>
+      </div>
+
+
+      <div><div className='flex justify-between mb-6'>
         <div className='flex gap-4'>
           <button 
             onClick={() => setIsModalOpen(true)}
-            className='bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded transition-colors'
+            className='bg-blue-500 hover:bg-blue-600 text-white font-semibold px-4 py-2 rounded transition-colors'
           >
             Add Product
           </button>
-          <button className='bg-red-500 hover:bg-red-600 text-white px-4 py-2 rounded transition-colors'>
+          <button className='bg-red-500 hover:bg-red-600 text-white font-semibold px-4 py-2 rounded transition-colors mr-10'>
             Delete Product
           </button>
         </div>
@@ -133,7 +137,14 @@ const ProductsPage: React.FC = () => {
           placeholder="Search..." 
           className='border p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500' 
         />
-      </div>
+      </div></div>
+
+
+       </div> 
+      
+   
+     
+      
 
       {/* Products Table */}
       {isLoading ? (
@@ -141,8 +152,8 @@ const ProductsPage: React.FC = () => {
           <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
         </div>
       ) : (
-        <div className="overflow-x-auto">
-          <table className="min-w-full bg-white border">
+        <div className="overflow-x-auto rounded-sm ">
+          <table className="min-w-full bg-white border ">
             <thead>
               <tr className="bg-gray-100">
                 <th className="py-2 px-4 border">Image</th>
