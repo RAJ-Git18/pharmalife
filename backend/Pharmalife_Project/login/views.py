@@ -4,12 +4,13 @@ from rest_framework.permissions import AllowAny
 from django.contrib.auth import authenticate
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import get_user_model
+from rest_framework.permissions import IsAuthenticated
 
 User = get_user_model()
 
 
 class LoginView(APIView):
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticated]
 
     def post(self, request):
         email = request.data.get("email")
@@ -26,34 +27,39 @@ class LoginView(APIView):
         access = refresh.access_token
 
         # Create response
-        res = Response(
+        response = Response(
             {
                 "message": "Login successful",
                 "isadmin": user.is_superuser,
             }
         )
 
-        # Set tokens as HTTP-only cookies
-        res.set_cookie(
+        response.set_cookie(
             key="access",
             value=str(access),
-            samesite="Lax",
+            max_age=60 * 60 * 24 * 7,  # 1 week
             httponly=True,
-            secure=False,
-            path='/',
-            domain='localhost',
-            max_age=60 * 60 * 24 * 7  # 7 days (in seconds)
+            secure=False,  # False for localhost
+            samesite="Strict",
+            path="/",
         )
 
-        res.set_cookie(
+        response.set_cookie(
             key="refresh",
             value=str(refresh),
-            samesite="Lax",
             httponly=True,
             secure=False,
-            path="/",
-            domain='localhost',
-            max_age=60 * 60 * 24 * 30  # 30 days
+            samesite="Strict",
+            max_age=60 * 60 * 24 * 7,  # 7 days
+            path="/auth/refresh/",  # Only sent to refresh endpoint
         )
 
-        return res
+        return response
+    
+
+
+
+    def get(self, request):
+        return Response({'message' : 'authenticated'})
+    
+
