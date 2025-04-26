@@ -1,5 +1,6 @@
 'use client'
 import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react';
+import DeleteProduct from './Delete';
 
 interface Product {
   id: number;
@@ -128,9 +129,10 @@ const ProductsPage: React.FC = () => {
           >
             Add Product
           </button>
-          <button className='bg-red-500 hover:bg-red-600 text-white font-semibold px-4 py-2 rounded transition-colors mr-10'>
-            Delete Product
-          </button>
+          <DeleteProduct 
+  fetchProducts={fetchProducts} 
+  products={products} 
+/>
         </div>
         <input 
           type="text" 
