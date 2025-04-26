@@ -10,7 +10,7 @@ User = get_user_model()
 
 
 class LoginView(APIView):
-    permission_classes = [IsAuthenticated]
+    permission_classes = [AllowAny]
 
     def post(self, request):
         email = request.data.get("email")

@@ -13,7 +13,7 @@ class ProductListCreateAPIView(APIView):
     parser_classes = [MultiPartParser, FormParser]
     
     def get(self, request):
-        products = Product.objects.filter(stock__gt=1)
+        products = Product.objects.filter(stock__gt=0)
         serializer = ProductSerializer(products, many=True, context={'request': request})
         return Response(serializer.data)
 
