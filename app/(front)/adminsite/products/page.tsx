@@ -1,6 +1,6 @@
-'use client'
-import React, { useState, useEffect, ChangeEvent, FormEvent } from 'react';
-import DeleteProduct from './Delete';
+"use client";
+import React, { useState, useEffect, ChangeEvent, FormEvent } from "react";
+import DeleteProduct from "./Delete";
 
 interface Product {
   id: number;
@@ -23,35 +23,35 @@ const ProductsPage: React.FC = () => {
   const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
   const [products, setProducts] = useState<Product[]>([]);
   const [formData, setFormData] = useState<ProductFormData>({
-    name: '',
-    description: '',
+    name: "",
+    description: "",
     price: 0,
     stock: 0,
-    image: null
+    image: null,
   });
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const fetchProducts = async () => {
     setIsLoading(true);
     try {
-      const response = await fetch('http://127.0.0.1:8000/products/');
-      
+      const response = await fetch("http://127.0.0.1:8000/products/");
+
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       }
-  
+
       const data = await response.json();
-      console.log('API Response:', data); // Log the raw response
-      
+      console.log("API Response:", data); // Log the raw response
+
       const formattedProducts = data.map((product: any) => ({
         ...product,
         price: Number(product.price),
-        stock: Number(product.stock)
+        stock: Number(product.stock),
       }));
-      
+
       setProducts(formattedProducts);
     } catch (err) {
-      console.error('Full fetch error:', err); 
+      console.error("Full fetch error:", err);
     } finally {
       setIsLoading(false);
     }
@@ -61,11 +61,13 @@ const ProductsPage: React.FC = () => {
     fetchProducts();
   }, []);
 
-  const handleInputChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleInputChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target;
     setFormData({
       ...formData,
-      [name]: name === 'price' || name === 'stock' ? Number(value) : value
+      [name]: name === "price" || name === "stock" ? Number(value) : value,
     });
   };
 
@@ -73,7 +75,7 @@ const ProductsPage: React.FC = () => {
     if (e.target.files && e.target.files[0]) {
       setFormData({
         ...formData,
-        image: e.target.files[0]
+        image: e.target.files[0],
       });
     }
   };
@@ -82,71 +84,67 @@ const ProductsPage: React.FC = () => {
     e.preventDefault();
 
     const formDataToSend = new FormData();
-    formDataToSend.append('name', formData.name);
-    formDataToSend.append('description', formData.description);
-    formDataToSend.append('price', formData.price.toString());
-    formDataToSend.append('stock', formData.stock.toString());
+    formDataToSend.append("name", formData.name);
+    formDataToSend.append("description", formData.description);
+    formDataToSend.append("price", formData.price.toString());
+    formDataToSend.append("stock", formData.stock.toString());
     if (formData.image) {
-      formDataToSend.append('image', formData.image);
+      formDataToSend.append("image", formData.image);
     }
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/products/', {
-        method: 'POST',
+      const response = await fetch("http://127.0.0.1:8000/products/", {
+        method: "POST",
         body: formDataToSend,
       });
 
       if (response.ok) {
-        await fetchProducts(); 
+        await fetchProducts();
         setIsModalOpen(false);
         setFormData({
-          name: '',
-          description: '',
+          name: "",
+          description: "",
           price: 0,
           stock: 0,
-          image: null
+          image: null,
         });
       } else {
-        console.error('Error creating product:', await response.json());
+        console.error("Error creating product:", await response.json());
       }
     } catch (error) {
-      console.error('Network error:', error);
+      console.error("Network error:", error);
     }
   };
 
   return (
     <div className="container mx-auto p-4  bg-white rounded-lg ">
-      <div className='flex justify-between'><div>      
-      <h1 className='text-2xl mb-10'>Products</h1>
-      </div>
-
-
-      <div><div className='flex justify-between mb-6'>
-        <div className='flex gap-4'>
-          <button 
-            onClick={() => setIsModalOpen(true)}
-            className='bg-blue-500 hover:bg-blue-600 text-white font-semibold px-4 py-2 rounded transition-colors'
-          >
-            Add Product
-          </button>
-          <DeleteProduct 
-  fetchProducts={fetchProducts} 
-  products={products} 
-/>
+      <div className="flex justify-between">
+        <div>
+          <h1 className="text-2xl mb-10">Products</h1>
         </div>
-        <input 
-          type="text" 
-          placeholder="Search..." 
-          className='border p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500' 
-        />
-      </div></div>
 
-
-       </div> 
-      
-   
-     
-      
+        <div>
+          <div className="flex justify-between mb-6">
+            <div className="flex gap-4">
+              <button
+                onClick={() => setIsModalOpen(true)}
+                className="bg-blue-500 hover:bg-blue-600 text-white font-semibold px-4 py-2 rounded transition-colors"
+              >
+                Add Product
+              </button>
+              <DeleteProduct
+                fetchProducts={fetchProducts}
+                products={products}
+              />
+            </div>
+            <input
+              type="text"
+              placeholder="Search..."
+              className="ml-6 border p-2 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+            />
+          </div>
+        </div>
+      </div>
 
       {/* Products Table */}
       {isLoading ? (
@@ -163,6 +161,7 @@ const ProductsPage: React.FC = () => {
                 <th className="py-2 px-4 border">Description</th>
                 <th className="py-2 px-4 border">Price</th>
                 <th className="py-2 px-4 border">Stock</th>
+                <th className="py-2 px-4 border">Actions</th>
               </tr>
             </thead>
             <tbody>
@@ -171,17 +170,29 @@ const ProductsPage: React.FC = () => {
                   <tr key={product.id} className="hover:bg-gray-50">
                     <td className="py-2 px-4 border">
                       {product.image && (
-                        <img 
-                          src={`http://127.0.0.1:8000${product.image}`} 
-                          alt={product.name} 
+                        <img
+                          src={`http://127.0.0.1:8000${product.image}`}
+                          alt={product.name}
                           className="h-16 w-16 object-cover rounded"
                         />
                       )}
                     </td>
                     <td className="py-2 px-4 border">{product.name}</td>
                     <td className="py-2 px-4 border">{product.description}</td>
-                    <td className="py-2 px-4 border">Npr.{product.price.toFixed(2)}</td>
+                    <td className="py-2 px-4 border">
+                      Npr.{product.price.toFixed(2)}
+                    </td>
                     <td className="py-2 px-4 border">{product.stock}</td>
+                    <td className="py-2 px-4 border ">
+                      <div className="flex gap-2 justify-center">
+                        <button className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm transition-colors">
+                          Latest
+                        </button>
+                        <button className="bg-purple-500 hover:bg-purple-600 text-white px-3 py-1 rounded text-sm transition-colors">
+                          Featured
+                        </button>
+                      </div>
+                    </td>
                   </tr>
                 ))
               ) : (
@@ -202,14 +213,14 @@ const ProductsPage: React.FC = () => {
           <div className="bg-white p-6 rounded-lg w-full max-w-md">
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-xl font-semibold">Add New Product</h2>
-              <button 
+              <button
                 onClick={() => setIsModalOpen(false)}
                 className="text-gray-500 hover:text-gray-700"
               >
                 ✕
               </button>
             </div>
-            
+
             <form onSubmit={handleSubmit}>
               <div className="mb-4">
                 <label className="block text-gray-700 mb-2">Product Name</label>
@@ -222,7 +233,7 @@ const ProductsPage: React.FC = () => {
                   required
                 />
               </div>
-              
+
               <div className="mb-4">
                 <label className="block text-gray-700 mb-2">Description</label>
                 <textarea
@@ -234,7 +245,7 @@ const ProductsPage: React.FC = () => {
                   required
                 />
               </div>
-              
+
               <div className="grid grid-cols-2 gap-4 mb-4">
                 <div>
                   <label className="block text-gray-700 mb-2">Price</label>
@@ -262,9 +273,11 @@ const ProductsPage: React.FC = () => {
                   />
                 </div>
               </div>
-              
+
               <div className="mb-6">
-                <label className="block text-gray-700 mb-2">Product Image</label>
+                <label className="block text-gray-700 mb-2">
+                  Product Image
+                </label>
                 <input
                   type="file"
                   name="image"
@@ -273,7 +286,7 @@ const ProductsPage: React.FC = () => {
                   className="w-full p-2 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                 />
               </div>
-              
+
               <div className="flex justify-end gap-2">
                 <button
                   type="button"
