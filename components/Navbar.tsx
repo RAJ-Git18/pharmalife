@@ -4,11 +4,12 @@ import axios from 'axios'
 import Link from 'next/link';
 import Image from 'next/image';
 import { ShoppingCart, Menu, X } from "lucide-react";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import useCartStore from '@/store/userCartStore';
 import { FcGoogle } from 'react-icons/fc';
-import { useRouter } from 'next/navigation';
-import GoogleSignIn from './GoogleSignIn';
+import { useRouter, usePathname } from 'next/navigation';
+import GoogleSignIn from './GoogleSignIn';import { User } from 'lucide-react'
+
 
 interface LoginData {
   email: string;
@@ -31,10 +32,22 @@ interface FormErrors {
 
 export default function Navbar() {
   const router = useRouter()
+  const pathname = usePathname()
   const { cartCount } = useCartStore();
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
   const [showAuthForm, setShowAuthForm] = useState<boolean>(false);
   const [isLogin, setIsLogin] = useState<boolean>(true);
+  const [loginstatus, setloginstatus] = useState<boolean>(false)
+  const [toggleuser, settoggleuser] = useState<boolean>(false)
+
+
+  useEffect(() => {
+    const isloggedin = localStorage.getItem('status')
+    if (isloggedin === 'Logged In') {
+      setloginstatus(true)
+    }
+  }, [])
+
 
   // Separate state for login and signup
   const [loginData, setLoginData] = useState<LoginData>({
@@ -154,22 +167,29 @@ export default function Navbar() {
     try {
       const response = await axios.post("http://127.0.0.1:8000/api/login/", loginData,
         {
-          withCredentials: true,
           headers: {
             'Content-Type': 'application/json'
           }
         }
       );
 
-      console.log("Login response", response.data)
+      //now save the tokens to the local storage
+      localStorage.setItem('access', response.data.access)
+      localStorage.setItem('refresh', response.data.refresh)
+
+      console.log(response.data)
 
 
       if (response.data.message === "Login successful") {
+        localStorage.setItem('status', response.data.status)
+        setloginstatus(true)
         if (response.data.isadmin) {
-          // router.push('/adminsite/dashboard')
+          router.push('/adminsite/dashboard')
+          router.refresh()
           setShowAuthForm(false)
         }
         else {
+          router.push('/')
           setShowAuthForm(false)
         }
       }
@@ -261,6 +281,20 @@ export default function Navbar() {
     }
   };
 
+
+  const handleLogout = () => {
+    setloginstatus(false)
+    settoggleuser(!toggleuser)
+    localStorage.removeItem('access');
+    localStorage.removeItem('refresh');
+    localStorage.removeItem('status');
+
+    (pathname === '/') ? router.refresh() : router.push('/')
+
+  }
+
+
+
   return (
     <>
       {/* Navbar */}
@@ -299,12 +333,39 @@ export default function Navbar() {
                 </span>
               )}
             </Link>
-            <button
-              onClick={toggleAuthForm}
-              className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors"
-            >
-              {showAuthForm ? 'Close' : 'Login'}
-            </button>
+
+
+
+            {/* to handle the login-logout toggle */}
+
+            {
+              !loginstatus ? (
+                <button
+                  onClick={toggleAuthForm}
+                  className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors font-semibold"
+                >
+                  Login
+                </button>
+              ) : (
+                <div className="relative flex flex-col items-center">
+                  <User
+                    onClick={() => { settoggleuser(!toggleuser) }}
+                    className="h-8 w-8 cursor-pointer"  // Make the User icon bigger
+                  />
+                  {toggleuser && (
+                    <button className="absolute top-10 z-50 bg-[#20B472] shadow-lg border rounded-md p-2 text-white font-bold"
+
+
+                      onClick={handleLogout}
+                    >
+                      Logout
+                    </button>
+                  )}
+                </div>
+              )
+            }
+
+
           </div>
 
           {/* Mobile Menu Button */}

@@ -57,6 +57,9 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+
+    # inlcude the custom middleware here hai tw
+    # "login.middleware.AdminRoutingMiddleware",
 ]
 
 AUTHENTICATION_BACKENDS = [
