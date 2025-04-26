@@ -32,12 +32,11 @@ class LoginView(APIView):
             {
                 "message": "Login successful",
                 "isadmin": user.is_superuser,
-                'access' : str(access),
-                'refresh' : str(refresh),
-                
+                "access": str(access),
+                "refresh": str(refresh),
+                "status": "Logged In"
             }
         )
-
 
 
 class ProtectedView(APIView):
@@ -46,6 +45,7 @@ class ProtectedView(APIView):
 
     def get(self, request):
         user = request.user
+        print(user)
         if user.is_superuser:
-            return Response({'message':'admin'})
+            return Response({"message": "admin"})
         return Response({"message": "user"})
