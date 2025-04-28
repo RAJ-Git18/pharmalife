@@ -153,14 +153,14 @@ const ProductsPage: React.FC = () => {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          is_latest: !product.is_featured
+          is_featured: !product.is_featured  // Changed from is_latest to is_featured
         })
       });
   
       if (response.ok) {
         await fetchProducts(); // Refresh the product list
       } else {
-        console.error("Error toggling latest status:", await response.json());
+        console.error("Error toggling featured status:", await response.json());
       }
     } catch (error) {
       console.error("Network error:", error);
