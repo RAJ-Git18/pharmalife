@@ -2,7 +2,7 @@ from django.urls import path
 from login.views import LoginView, ProtectedView
 from accounts.views import RegisterAPI
 from orders.views import OrdersView
-from inquiry.views import CustomerInquiryView
+from inquiry.views import CustomerInquiryView, GetInquiryView
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
@@ -15,5 +15,11 @@ urlpatterns = [
     path("orders/", OrdersView.as_view(), name="orders"),
     path("protected/", ProtectedView.as_view(), name="protected"),
     path("submitinquiry/", CustomerInquiryView.as_view(), name="inquiry"),
+    path(
+        "deleteinquiry/<uuid:inquiry_id>/",
+        CustomerInquiryView.as_view(),
+        name="inquiry",
+    ),
+    path("getinquiry/", GetInquiryView.as_view(), name="inquiry"),
     path("token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),
 ]

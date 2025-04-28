@@ -67,16 +67,16 @@ export default function AdminLayout({
       {/* Sidebar */}
       <aside className="w-64 bg-white shadow-md p-6 fixed top-18 left-0 h-screen">
         <nav className="flex flex-col space-y-4">
-          <Link href="/adminsite/dashboard" className="text-gray-700 hover:text-green-600">
+          <Link href="/adminsite/dashboard" className="text-gray-700 hover:text-green-600 font-semibold">
             Dashboard
           </Link>
-          <Link href="/adminsite/products" className="text-gray-700 hover:text-green-600">
+          <Link href="/adminsite/products" className="text-gray-700 hover:text-green-600 font-semibold">
             Products
           </Link>
-          <Link href="/adminsite/users" className="text-gray-700 hover:text-green-600">
+          <Link href="/adminsite/users" className="text-gray-700 hover:text-green-600 font-semibold">
             Users
           </Link>
-          <Link href="/adminsite/inquiry" className="text-gray-700 hover:text-green-600">
+          <Link href="/adminsite/inquiry" className="text-gray-700 hover:text-green-600 font-semibold">
             Customer Inquiry
           </Link>
         </nav>
