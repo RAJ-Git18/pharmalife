@@ -56,7 +56,7 @@ export default function AboutPage() {
   }
 
   return (
-    <div className="bg-gray-100 flex items-center justify-center p-8 gap-40">
+    <div className="bg-gray-100 flex items-center justify-center p-12 gap-40 min-h-fit">
       <div className="flex flex-col gap-3">
         <div className="text-3xl text-[#1FB472] font-bold">Contact us</div>
 

@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react';
 import useCartStore from '@/store/userCartStore';
 import { FcGoogle } from 'react-icons/fc';
 import { useRouter, usePathname } from 'next/navigation';
-import GoogleSignIn from './GoogleSignIn';import { User } from 'lucide-react'
+import GoogleSignIn from './GoogleSignIn'; import { User } from 'lucide-react'
 
 
 interface LoginData {
@@ -294,7 +294,6 @@ export default function Navbar() {
   }
 
 
-
   return (
     <>
       {/* Navbar */}
@@ -537,7 +536,7 @@ export default function Navbar() {
                   className="w-full flex items-center justify-center gap-2 py-2 border border-gray-300 rounded-md hover:bg-gray-50 transition-colors"
                 >
                   <FcGoogle size={20} />
-                  <span><GoogleSignIn/></span>
+                  <span><GoogleSignIn /></span>
                 </button>
               </>
             )}
