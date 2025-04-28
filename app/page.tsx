@@ -13,7 +13,7 @@ const card_images : string[] = [
 
 export default function Home() {
   return (
-    <div className="md:mx-32 mx-8 mt-20">
+    <div className="md:mx-32 mx-8 -mt-8">
 
       <div className="slider">
         <Slider />
