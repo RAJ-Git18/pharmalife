@@ -8,42 +8,28 @@ import useCartStore from '@/store/userCartStore'
 
 
 const Card = ({ image_path }: { image_path: string }) => {
+  const backendUrl = process.env.NODE_ENV === 'development' ? 'http://127.0.0.1:8000' : 'https://your-production-url.com'; // Adjust this for production
 
-  const {cartCount, addToCart} = useCartStore()
+  const fullImagePath = `${backendUrl}${image_path}`; // This ensures the full URL is used
+
 
   //add the cart to the backend
-  const cartClicked = async () => {
-    addToCart()
-    console.log(cartCount)
-    const response = await fetch("http://127.0.0.1:8000/api/cart")
-    const data = await response.json()
-    console.log(data)
-  }
+  
 
 
   return (
     <div className='border-2 mt-10 h-70 w-64 rounded-sm flex flex-col justify-between items-center gap-2'>
       <Image
-        src={image_path}
+        src={fullImagePath}
         alt="Cards.png"
-        width={100}
-        height={200}
+        width={340}
+        height={400}
         // style={{ width: "auto", height: "auto" }}
         className='rounded-md object-cover h-[200px] w-[250px]'
       />
 
-      <div className="card_name">name is here</div>
-      <div className="flex justify-between border-t-2 w-full p-4">
-        <div className="price">price</div>
-        <div className="card_whilist flex gap-3">
-
-            <button onClick={cartClicked}>
-              <ShoppingCart />
-
-            </button>
-
-          <Link href='/cart'><Heart /></Link>
-        </div>
+      <div className="flex justify-between  w-full p-4">
+        
       </div>
 
     </div>
