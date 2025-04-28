@@ -70,7 +70,7 @@ const cartClicked = async () => {
   }, []);
   
   return (
-    <div className="md:mx-32 mx-8 mt-20">
+    <div className="md:mx-32 mx-8 -mt-8">
 
     {/* SLIDER */}
     <div className="slider">

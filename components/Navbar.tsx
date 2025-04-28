@@ -184,8 +184,8 @@ export default function Navbar() {
         localStorage.setItem('status', response.data.status)
         setloginstatus(true)
         if (response.data.isadmin) {
-          router.push('/adminsite/dashboard')
-          router.refresh()
+          window.location.href = ('/adminsite/dashboard')
+
           setShowAuthForm(false)
         }
         else {
