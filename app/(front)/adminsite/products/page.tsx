@@ -9,6 +9,8 @@ interface Product {
   price: number;
   stock: number;
   image?: string;
+  is_latest?: boolean;  
+  is_featured?: boolean; 
 }
 
 interface ProductFormData {
@@ -116,6 +118,55 @@ const ProductsPage: React.FC = () => {
     }
   };
 
+  const toggleLatestStatus = async (productId: number) => {
+    try {
+      const product = products.find(p => p.id === productId);
+      if (!product) return;
+  
+      const response = await fetch(`http://127.0.0.1:8000/products/${productId}/toggle_latest/`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          is_latest: !product.is_latest
+        })
+      });
+  
+      if (response.ok) {
+        await fetchProducts(); // Refresh the product list
+      } else {
+        console.error("Error toggling latest status:", await response.json());
+      }
+    } catch (error) {
+      console.error("Network error:", error);
+    }
+  };
+  const toggleFeaturedStatus = async (productId: number) => {
+    try {
+      const product = products.find(p => p.id === productId);
+      if (!product) return;
+  
+      const response = await fetch(`http://127.0.0.1:8000/products/${productId}/toggle_featured/`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          is_latest: !product.is_featured
+        })
+      });
+  
+      if (response.ok) {
+        await fetchProducts(); // Refresh the product list
+      } else {
+        console.error("Error toggling latest status:", await response.json());
+      }
+    } catch (error) {
+      console.error("Network error:", error);
+    }
+  };
+
   return (
     <div className="container mx-auto p-4  bg-white rounded-lg ">
       <div className="flex justify-between">
@@ -185,12 +236,21 @@ const ProductsPage: React.FC = () => {
                     <td className="py-2 px-4 border">{product.stock}</td>
                     <td className="py-2 px-4 border ">
                       <div className="flex gap-2 justify-center">
-                        <button className="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded text-sm transition-colors">
-                          Latest
-                        </button>
-                        <button className="bg-purple-500 hover:bg-purple-600 text-white px-3 py-1 rounded text-sm transition-colors">
-                          Featured
-                        </button>
+                      <button 
+  onClick={() => toggleLatestStatus(product.id)}
+  className={`${product.is_latest ? 'bg-green-500 hover:bg-green-600' : 'bg-blue-500 hover:bg-blue-600'} text-white px-3 py-1 rounded text-sm transition-colors`}
+>
+  {product.is_latest ? 'Latest ✓' : 'Make Latest'}
+</button>
+
+
+<button 
+  onClick={() => toggleFeaturedStatus(product.id)}
+  className={`${product.is_featured ? 'bg-green-500 hover:bg-green-600' : 'bg-blue-500 hover:bg-blue-600'} text-white px-3 py-1 rounded text-sm transition-colors`}
+>
+  {product.is_featured ? 'Featured ✓' : 'Feature Product'}
+</button>
+
                       </div>
                     </td>
                   </tr>

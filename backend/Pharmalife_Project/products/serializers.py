@@ -6,7 +6,7 @@ class ProductSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Product
-        fields = ['id', 'name', 'description', 'price', 'stock', 'image']
+        fields = ['id', 'name', 'description', 'price', 'stock', 'image','is_latest','is_featured']
         extra_kwargs = {
             'image': {'required': False}
         }
@@ -16,3 +16,8 @@ class ProductSerializer(serializers.ModelSerializer):
         if instance.image:
             representation['image'] = instance.image.url
         return representation
+    def get_image(self, obj):
+        request = self.context.get('request')
+        if obj.image and hasattr(obj.image, 'url'):
+            return request.build_absolute_uri(obj.image.url)
+        return None

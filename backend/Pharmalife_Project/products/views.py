@@ -13,7 +13,11 @@ class ProductListCreateAPIView(APIView):
     parser_classes = [MultiPartParser, FormParser]
     
     def get(self, request):
+        is_latest = request.query_params.get('is_latest',None)
         products = Product.objects.filter(stock__gt=0)
+        if is_latest is not None:
+            is_latest_bool = is_latest.lower()=='false'
+            products = products.filter(is_latest=is_latest_bool)
         serializer = ProductSerializer(products, many=True, context={'request': request})
         return Response(serializer.data)
 
@@ -23,7 +27,41 @@ class ProductListCreateAPIView(APIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+class ToggleLatestProductView(APIView):
+    def patch(self, request, pk):
+        try:
+            product = Product.objects.get(pk=pk)
+            product.is_latest = not product.is_latest  # Toggle the value
+            product.save()
+            serializer = ProductSerializer(product, context={'request': request})
+            return Response(serializer.data)
+        except Product.DoesNotExist:
+            raise Http404
+class LatestProductListView(APIView): 
+    def get(self, request):
+        latest_products = Product.objects.filter(is_latest=True, stock__gt=0)
+        serializer = ProductSerializer(latest_products, many=True, context={'request': request})
+        return Response(serializer.data)
+    
+    
 
+
+class ToggleFeatureProductView(APIView):
+    def patch(self,request,pk):
+        try:
+            product= Product.objects.get(pk=pk)
+            product.is_featured = not product.is_featured
+            product.save()
+            serializer = ProductSerializer(product, context={'request': request})
+            return Response(serializer.data)
+        except Product.DoesNotExist:
+            raise Http404
+        
+class FeaturedProductListView(APIView):
+    def get(self,request):
+        featured_products = Product.objects.filter(is_featured= True,stock__gt=0)
+        serializer = ProductSerializer(featured_products, many=True, context={'request': request})
+        return Response(serializer.data)
 
 class RetrieveDeleteUpdateView(APIView):
     parser_classes = [MultiPartParser, FormParser]
