@@ -45,7 +45,7 @@ export default function AdminLayout({
         console.error('Error:', e)
 
         const response = await axios.post(`${apiUrl}/api/token/refresh/`, {
-          refresh: refresh_token
+          'refresh': refresh_token
         });
 
         localStorage.setItem('access', response.data.access);

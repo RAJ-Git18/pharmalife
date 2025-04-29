@@ -45,7 +45,6 @@ class ProtectedView(APIView):
 
     def get(self, request):
         user = request.user
-        print(user)
         if user.is_superuser:
             return Response({"message": "admin"})
-        return Response({"message": "user"})
+        return Response({"message": "user", "userid": user.id})
