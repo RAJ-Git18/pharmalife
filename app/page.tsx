@@ -1,11 +1,12 @@
 'use client'
 import Card from "@/components/ui/Card";
 import { Slider } from "@/components/ui/carousel";
-import Image from "next/image";
-import { ShoppingCart, Heart } from 'lucide-react'
-import Link from 'next/link'
+import { ShoppingCart } from 'lucide-react'
 import { useEffect, useState } from "react";
 import useCartStore from '@/store/userCartStore'
+
+
+const apiUrl = process.env.NEXT_PUBLIC_API_URL
 
 
 const card_images : string[] = [
@@ -36,7 +37,7 @@ export default function Home() {
 const cartClicked = async () => {
     addToCart()
     console.log(cartCount)
-    const response = await fetch("http://127.0.0.1:8000/api/cart")
+    const response = await fetch(`${apiUrl}/api/cart`)
     const data = await response.json()
     console.log(data)
   }
@@ -44,7 +45,7 @@ const cartClicked = async () => {
     const fetchProducts = async () => {
       try {
         // Fetch latest products
-        const latestResponse = await fetch("http://127.0.0.1:8000/products/latest/");
+        const latestResponse = await fetch(`${apiUrl}/products/latest/`);
         if (!latestResponse.ok) {
           throw new Error(`HTTP error! status: ${latestResponse.status}`);
         }
@@ -52,7 +53,7 @@ const cartClicked = async () => {
         setLatestProducts(latestData);
   
         // Fetch featured products
-        const featuredResponse = await fetch("http://127.0.0.1:8000/products/featured/");
+        const featuredResponse = await fetch(`${apiUrl}/products/featured/`);
         if (!featuredResponse.ok) {
           throw new Error(`HTTP error! status: ${featuredResponse.status}`);
         }

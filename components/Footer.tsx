@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { Mail, MapPin, Phone, Facebook, Twitter, Linkedin, Youtube, Send } from "lucide-react";
+import { Mail, MapPin, Phone, Send } from "lucide-react";
 import Image from "next/image";
 
 const Footer: React.FC = () => {

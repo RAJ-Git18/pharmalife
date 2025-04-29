@@ -11,6 +11,9 @@ import { useRouter, usePathname } from 'next/navigation';
 import GoogleSignIn from './GoogleSignIn'; import { User } from 'lucide-react'
 
 
+const apiUrl = process.env.NEXT_PUBLIC_API_URL
+
+
 interface LoginData {
   email: string;
   password: string;
@@ -165,7 +168,7 @@ export default function Navbar() {
     };
 
     try {
-      const response = await axios.post("http://127.0.0.1:8000/api/login/", loginData,
+      const response = await axios.post(`${apiUrl}/api/login/`, loginData,
         {
           headers: {
             'Content-Type': 'application/json'
@@ -213,7 +216,7 @@ export default function Navbar() {
       };
 
       const response = await axios.post(
-        "http://localhost:8000/accounts/register/",  // Your Django registration endpoint
+        `${apiUrl}/accounts/register/`,  // Your Django registration endpoint
         registrationData,
         {
           headers: {

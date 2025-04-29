@@ -4,6 +4,9 @@ import axios from 'axios'
 import { Trash } from 'lucide-react';
 import React, { useState, useEffect } from 'react'
 
+const apiUrl = process.env.NEXT_PUBLIC_API_URL
+
+
 // Data types of the data for the inquiry
 interface Inquiry {
   inquiry_id: string;
@@ -27,7 +30,7 @@ const page = () => {
   useEffect(() => {
     const getInquiry = async () => {
       try {
-        const response = await axios.get('http://127.0.0.1:8000/api/getinquiry/')
+        const response = await axios.get(`${apiUrl}/api/getinquiry/`)
 
         if (response.data.message === 'Data fetched successfully') {
           setInquiryList(response.data.data)
@@ -50,7 +53,7 @@ const page = () => {
 
   const DeleteInquiry = async (inquiry_id: string) => {
     try {
-      const response = await axios.delete(`http://127.0.0.1:8000/api/deleteinquiry/${inquiry_id}/`)
+      const response = await axios.delete(`${apiUrl}/api/deleteinquiry/${inquiry_id}/`)
 
       window.location.reload()
 

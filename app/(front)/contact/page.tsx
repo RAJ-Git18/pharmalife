@@ -5,6 +5,8 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import axios from 'axios'
 
+const apiUrl = process.env.NEXT_PUBLIC_API_URL
+
 export default function AboutPage() {
 
   const router = useRouter()
@@ -32,14 +34,13 @@ export default function AboutPage() {
     //send data to the django backend
     const submitinquiry = async () => {
       try {
-        const response = await axios.post("http://127.0.0.1:8000/api/submitinquiry/", formData,
+        const response = await axios.post(`${apiUrl}/api/submitinquiry/`, formData,
           {
             headers: {
               'Content-Type': 'application/json'
             }
           }
         );
-        console.log('sflsdlfs');
 
         response.data.message === 'inquiry submitted' && alert('Form is submitted')
 

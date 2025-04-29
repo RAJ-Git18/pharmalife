@@ -1,10 +1,12 @@
 'use client'
 
-import Link from "next/link";
 import { useRouter } from 'next/navigation'
 import axios from 'axios'
 import { useState, useEffect } from 'react'
-import Loader from "@/components/Loader";
+import Link from 'next/link'
+import Loader from '@/components/Loader'
+
+const apiUrl = process.env.NEXT_PUBLIC_API_URL
 
 export default function AdminLayout({
   children,
@@ -28,7 +30,7 @@ export default function AdminLayout({
       }
 
       try {
-        const response = await axios.get("http://127.0.0.1:8000/api/protected/", {
+        const response = await axios.get(`${apiUrl}/api/protected/`, {
           headers: {
             Authorization: `Bearer ${access_token}`,
           },
@@ -42,7 +44,7 @@ export default function AdminLayout({
       } catch (e) {
         console.error('Error:', e)
 
-        const response = await axios.post('http://127.0.0.1:8000/api/token/refresh/', {
+        const response = await axios.post(`${apiUrl}/api/token/refresh/`, {
           refresh: refresh_token
         });
 
