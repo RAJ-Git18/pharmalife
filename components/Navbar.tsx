@@ -8,6 +8,7 @@ import { useEffect, useState } from 'react';
 import { FcGoogle } from 'react-icons/fc';
 import { useRouter, usePathname } from 'next/navigation';
 import GoogleSignIn from './GoogleSignIn'; import { User } from 'lucide-react'
+import { useCartContext } from '@/context/CardContext';
 
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL
@@ -35,6 +36,12 @@ interface FormErrors {
 export default function Navbar() {
   const router = useRouter()
   const pathname = usePathname()
+
+
+  const { cartCount, setCartCount } = useCartContext()
+
+
+
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
   const [showAuthForm, setShowAuthForm] = useState<boolean>(false);
   const [isLogin, setIsLogin] = useState<boolean>(true);
@@ -177,6 +184,7 @@ export default function Navbar() {
       //now save the tokens to the local storage
       localStorage.setItem('access', response.data.access)
       localStorage.setItem('refresh', response.data.refresh)
+      localStorage.setItem('cartCount', "0")
 
       console.log(response.data)
 
@@ -190,7 +198,7 @@ export default function Navbar() {
           setShowAuthForm(false)
         }
         else {
-          router.push('/')
+          window.location.href = '/'
           setShowAuthForm(false)
         }
       }
@@ -327,11 +335,11 @@ export default function Navbar() {
             />
             <Link href="/cart" className="relative">
               <ShoppingCart size={34} className="text-green" />
-              {/* {cartCount > 0 && (
+              {cartCount > 0 && (
                 <span className="bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center absolute -top-2 -right-2">
                   {cartCount}
                 </span>
-              )} */}
+              )}
             </Link>
 
 

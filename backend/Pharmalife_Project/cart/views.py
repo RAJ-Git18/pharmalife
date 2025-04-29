@@ -22,3 +22,13 @@ class CartView(APIView):
             )
 
         return Response(serializer.errors)
+
+    def get(self, request, *args, **kwargs):
+        userid = kwargs.get("userid")
+        try:
+            cartid = CartModel.objects.filter(userid=userid)
+            serializer = CartSerializer(cartid, many=True)
+
+            return Response({"message": serializer.data}, status=status.HTTP_200_OK)
+        except:
+            return Response({"message": "imhere"}, status=status.HTTP_204_NO_CONTENT)

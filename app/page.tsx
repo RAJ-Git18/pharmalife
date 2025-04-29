@@ -5,6 +5,7 @@ import { ShoppingCart } from 'lucide-react'
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import { useCartContext } from "@/context/CardContext";
 
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL
@@ -38,6 +39,10 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   const router = useRouter()
+
+
+  const { cartCount, setCartCount } = useCartContext()
+
 
   useEffect(() => {
     setaccessToken(localStorage.getItem('access'))
@@ -74,6 +79,11 @@ export default function Home() {
 
   //maile yaha bata cart haru add gardai xu
   const addToCart = async (product_id: Number) => {
+
+    if (!accessToken) {
+      alert('Login to add to cart')
+    }
+
     try {
       const response = await axios.get(`${apiUrl}/api/protected/`,
         {
@@ -82,7 +92,6 @@ export default function Home() {
           }
         }
       )
-      // console.log(response.data.message)
 
       if (response.data.message === 'admin') {
         alert('Admin cannot add to carts')
@@ -98,9 +107,10 @@ export default function Home() {
       )
 
       if (response2.status === 201) {
-        alert(response2.data.message)
+        setCartCount(cartCount + 1)
+        return
       }
-
+      alert('Cart cannot be added!')
     } catch (error) {
       console.error(error)
       // alert('Login to add to carts')
