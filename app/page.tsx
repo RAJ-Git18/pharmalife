@@ -3,7 +3,6 @@ import Card from "@/components/ui/Card";
 import { Slider } from "@/components/ui/carousel";
 import { ShoppingCart } from 'lucide-react'
 import { useEffect, useState } from "react";
-import useCartStore from '@/store/userCartStore'
 
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL
@@ -13,9 +12,10 @@ const card_images : string[] = [
   "/images/slider/medicine.png",
   "/images/products/aniseptic.png",
   "/images/slider/medicine.png",
-  "/images/products/aniseptic.png",
-                                                                 
+  "/images/products/aniseptic.png",                                                               
 ]
+
+
 interface Product {
   id: number;
   name: string;
@@ -32,11 +32,8 @@ export default function Home() {
   const [latestProducts, setLatestProducts] = useState<Product[]>([]);
   const [featuredProducts, setFeaturedProducts] = useState<Product[]>([])
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const {cartCount, addToCart} = useCartStore()
 
 const cartClicked = async () => {
-    addToCart()
-    console.log(cartCount)
     const response = await fetch(`${apiUrl}/api/cart`)
     const data = await response.json()
     console.log(data)

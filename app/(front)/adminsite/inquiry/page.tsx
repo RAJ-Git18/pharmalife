@@ -26,6 +26,8 @@ const page = () => {
   // State for showing message for each inquiry (track each one separately)
   const [showMessage, setShowMessage] = useState<{ [key: string]: boolean }>({})
 
+  const [isListEmpty, setisListEmpty] = useState<boolean>(false)
+
   // First time page refresh huda afai call hunxa
   useEffect(() => {
     const getInquiry = async () => {
@@ -34,6 +36,11 @@ const page = () => {
 
         if (response.data.message === 'Data fetched successfully') {
           setInquiryList(response.data.data)
+          if (response.data.data.length === 0) {
+            setisListEmpty(true)
+          } else {
+            setisListEmpty(false)
+          }
         }
 
       } catch (error) {
@@ -61,6 +68,17 @@ const page = () => {
       alert('Unable to delete the inquiry')
     }
 
+  }
+
+
+  if (isListEmpty) {
+    return (
+      <div className="flex items-center justify-center h-full">
+        <h1 className='font-semibold text-xl mb-32'>
+        No inquiries at the moment
+        </h1>
+      </div>
+    )
   }
 
 

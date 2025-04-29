@@ -5,7 +5,6 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { ShoppingCart, Menu, X } from "lucide-react";
 import { useEffect, useState } from 'react';
-import useCartStore from '@/store/userCartStore';
 import { FcGoogle } from 'react-icons/fc';
 import { useRouter, usePathname } from 'next/navigation';
 import GoogleSignIn from './GoogleSignIn'; import { User } from 'lucide-react'
@@ -36,7 +35,6 @@ interface FormErrors {
 export default function Navbar() {
   const router = useRouter()
   const pathname = usePathname()
-  const { cartCount } = useCartStore();
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
   const [showAuthForm, setShowAuthForm] = useState<boolean>(false);
   const [isLogin, setIsLogin] = useState<boolean>(true);
@@ -329,11 +327,11 @@ export default function Navbar() {
             />
             <Link href="/cart" className="relative">
               <ShoppingCart size={34} className="text-green" />
-              {cartCount > 0 && (
+              {/* {cartCount > 0 && (
                 <span className="bg-red-500 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center absolute -top-2 -right-2">
                   {cartCount}
                 </span>
-              )}
+              )} */}
             </Link>
 
 
