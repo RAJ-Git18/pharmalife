@@ -184,7 +184,6 @@ export default function Navbar() {
       //now save the tokens to the local storage
       localStorage.setItem('access', response.data.access)
       localStorage.setItem('refresh', response.data.refresh)
-      localStorage.setItem('cartCount', "0")
 
       console.log(response.data)
 

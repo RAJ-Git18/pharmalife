@@ -4,11 +4,15 @@ from .models import CartModel
 from .serializers import CartSerializer
 from rest_framework import status
 
+from django.contrib.auth import get_user_model
+
+User = get_user_model()
+
 
 class CartView(APIView):
-    def post(self, request, *args, **kwargs):
+    def post(self, request):
+        userid = request.data.get("userid")
         productid = request.data.get("productid")
-        userid = kwargs.get("userid")
 
         data = {"productid": productid, "userid": userid}
 
@@ -24,10 +28,12 @@ class CartView(APIView):
         return Response(serializer.errors)
 
     def get(self, request, *args, **kwargs):
-        userid = kwargs.get("userid")
+        userid = kwargs.get('userid')
         try:
-            cartid = CartModel.objects.filter(userid=userid)
+            user = User.objects.get(id=userid)
+            cartid = CartModel.objects.filter(userid=user)
             serializer = CartSerializer(cartid, many=True)
+            print(serializer.data)
 
             return Response({"message": serializer.data}, status=status.HTTP_200_OK)
         except:
