@@ -40,10 +40,10 @@ const Footer: React.FC = () => {
           </h3>
           <div className="mt-4 space-y-3 text-lg"> {/* Increased gap and text size */}
             <a href="/about" className="block">About</a>
-            <a href="/products" className="block">All Products</a>
+            <a href="/" className="block">All Products</a>
             <a href="/location" className="block">Locations Map</a>
             {/* <a href="#" className="block">FAQ</a> */}
-            <a href="#" className="block">Contact us</a>
+            <a href="/contact" className="block">Contact us</a>
           </div>
         </div>
 
@@ -53,7 +53,7 @@ const Footer: React.FC = () => {
             Services
           </h3>
           <div className="mt-4 space-y-3 text-lg"> {/* Increased gap and text size */}
-            <a href="#" className="block">Wish List</a>
+            <a href="/wishlist" className="block">Wish List</a>
             <a href="#" className="block">Login</a>
             <a href="/termsandcondition" className="block">Terms & Conditions</a>
           </div>
@@ -62,16 +62,7 @@ const Footer: React.FC = () => {
         {/* Newsletter */}
         <div>
           
-          <div className="mt-4 flex items-center">
-            <input
-              type="email"
-              placeholder="Email*"
-              className="w-full p-2 border rounded-l-md focus:outline-none text-lg mr-2" 
-            />
-            <button className="bg-[#1EB373] p-2 rounded-r-md text-white text-lg">
-              <Send size={26} />
-            </button>
-          </div>
+          
           <h3 className="font-semibold text-xl mt-6"> {/* Increased text size */}
             We Accept
           </h3>

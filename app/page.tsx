@@ -161,7 +161,7 @@ export default function Home() {
                 >
                   <Card image_path={product.image || "/images/default-product.png"} />
                   <h2 className="text-xl font-semibold mt-4">{product.name}</h2>
-                  <p className="text-gray-600 mt-2">${product.price}</p>
+                  <p className="text-gray-600 mt-2">Npr.{product.price}</p>
                   <p className="text-gray-500 mt-2 text-sm">{product.description}</p>
 
                   {/* BUTTONS */}
