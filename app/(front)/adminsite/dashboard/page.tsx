@@ -1,26 +1,27 @@
-import WeeklySales from '@/components/ui/WeeklySales'
-import TotalOrders from '@/components/ui/TotalOrders'
-import TotalSales from '@/components/ui/TotalSales'
-
-
+import WeeklySales from '@/components/ui/WeeklySales';
+import TotalOrders from '@/components/ui/TotalOrders';
+import TotalSales from '@/components/ui/TotalSales';
 
 const page = () => {
   return (
-    <div className="mt-3 flex flex-col h-[80vh] w-full p-1 gap-8">
+    <div className="mt-3 flex flex-col min-h-screen w-full p-2 gap-6">
 
-      <div className="w-full flex gap-10">
-        <div className="bg-white h-48 rounded-lg w-full">
+      {/* Top section with two cards - responsive wrap */}
+      <div className="w-full flex flex-col md:flex-row gap-4">
+        <div className="bg-white rounded-lg w-full md:w-1/2 p-4 shadow-md">
           <WeeklySales />
         </div>
-        <div className="bg-white h-48 rounded-lg w-full">
+        <div className="bg-white rounded-lg w-full md:w-1/2 p-4 shadow-md">
           <TotalOrders />
         </div>
       </div>
-      <div className="bg-white h-96 w-full rounded-lg">
+
+      {/* Full width bottom chart */}
+      <div className="bg-white rounded-lg w-full p-4 shadow-md flex-1">
         <TotalSales />
       </div>
     </div>
   );
-}
+};
 
 export default page;

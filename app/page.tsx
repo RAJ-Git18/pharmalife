@@ -50,6 +50,7 @@ export default function Home() {
     const fetchProducts = async () => {
       try {
         // Fetch latest products
+        console.log('API URL:', `${apiUrl}/products/latest/`);
         const latestResponse = await fetch(`${apiUrl}/products/latest/`);
         if (!latestResponse.ok) {
           throw new Error(`HTTP error! status: ${latestResponse.status}`);
