@@ -49,7 +49,7 @@ const WeeklySales = () => {
       <div className="h-48 w-full flex justify-between p-5">
         <div className="sales flex flex-col w-1/2 items-center">
           <div className="h-1/2 p-10 text-center font-medium">Weekly Sales</div>
-          <div className=" h-1/2 text-3xl font-semibold">$400K</div>
+          <div className=" h-1/2 text-3xl font-semibold">Npr.400K</div>
         </div>
         <div className="barchart w-[33%]">
 
