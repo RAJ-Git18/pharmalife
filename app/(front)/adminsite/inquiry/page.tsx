@@ -3,6 +3,7 @@
 import axios from 'axios'
 import { Trash } from 'lucide-react';
 import React, { useState, useEffect } from 'react'
+import Loader from '@/components/Loader';
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL
 
@@ -20,6 +21,8 @@ interface Inquiry {
 
 const page = () => {
 
+  const [isLoading, setisLoading] = useState(true)
+
   // State of the fetched data
   const [inquiryList, setInquiryList] = useState<Inquiry[]>([])
 
@@ -36,6 +39,7 @@ const page = () => {
 
         if (response.data.message === 'Data fetched successfully') {
           setInquiryList(response.data.data)
+          setisLoading(false)
           if (response.data.data.length === 0) {
             setisListEmpty(true)
           } else {
@@ -75,48 +79,56 @@ const page = () => {
     return (
       <div className="flex items-center justify-center h-full">
         <h1 className='font-semibold text-xl mb-32'>
-        No inquiries at the moment
+          No inquiries at the moment
         </h1>
       </div>
     )
   }
 
+  if (isLoading) {
+    return (
+      <Loader />
+    )
 
-  return (
-    <div className="min-h-screen flex flex-col">
-      {
-        inquiryList.map((inquiry) => (
-          <ul className="bg-white m-3 rounded-lg" key={inquiry.inquiry_id}>
-            <div className="flex items-center justify-between px-4 py-2">
-              <button
-                className="p-3 text-left"
-                onClick={() => toggleMessage(inquiry.inquiry_id)}
-              >
-                <span>{inquiry.inquiry_id}</span> {/* Use span instead of li */}
-              </button>
+  }
 
-              <button
-                onClick={() => (DeleteInquiry(inquiry.inquiry_id))}
-                className="ml-2" // Optional: Add margin to the trash icon button
-              >
-                <Trash />
-              </button>
-            </div>
+  if (!isLoading) {
+    return (
+      <div className="min-h-screen flex flex-col">
+        {
+          inquiryList.map((inquiry) => (
+            <ul className="bg-white m-3 rounded-lg" key={inquiry.inquiry_id}>
+              <div className="flex items-center justify-between px-4 py-2">
+                <button
+                  className="p-3 text-left"
+                  onClick={() => toggleMessage(inquiry.inquiry_id)}
+                >
+                  <span>{inquiry.inquiry_id}</span> {/* Use span instead of li */}
+                </button>
 
-            {/* Conditionally render the message */}
-            {showMessage[inquiry.inquiry_id] && (
-              <div className="border-t-2 p-3 font-semibold">
-                <li>Name: {inquiry.firstName} {inquiry.lastName}</li>
-                <li>Email: {inquiry.email}</li>
-                <li className="mt-3">{inquiry.message}</li>
-                <li>{new Date(inquiry.created_at).toLocaleString()}</li>
+                <button
+                  onClick={() => (DeleteInquiry(inquiry.inquiry_id))}
+                  className="ml-2" // Optional: Add margin to the trash icon button
+                >
+                  <Trash />
+                </button>
               </div>
-            )}
-          </ul>
-        ))
-      }
-    </div>
-  )
+
+              {/* Conditionally render the message */}
+              {showMessage[inquiry.inquiry_id] && (
+                <div className="border-t-2 p-3 font-semibold">
+                  <li>Name: {inquiry.firstName} {inquiry.lastName}</li>
+                  <li>Email: {inquiry.email}</li>
+                  <li className="mt-3">{inquiry.message}</li>
+                  <li>{new Date(inquiry.created_at).toLocaleString()}</li>
+                </div>
+              )}
+            </ul>
+          ))
+        }
+      </div>
+    )
+  }
 }
 
 export default page

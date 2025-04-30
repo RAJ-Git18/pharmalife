@@ -1,10 +1,10 @@
 'use client'
 
-import React from 'react'
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import axios from 'axios'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
+import Loader from '@/components/Loader'  // Assuming you have a Loader component
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL
 
@@ -24,21 +24,19 @@ interface CartItemsInterface {
   userid: number,
   productid: string,
   quantity: number,
-  product : ProductItemsInterface
+  product: ProductItemsInterface
 }
 
 const page = () => {
-
   const router = useRouter()
-
   const [cartItems, setcartItems] = useState<CartItemsInterface[]>([])
-
+  const [isLoading, setIsLoading] = useState(true)  // Track loading state
 
   useEffect(() => {
     const accessToken = localStorage.getItem('access')
     const refreshToken = localStorage.getItem('refresh')
     if (!accessToken) {
-      alert('Login to see to cart')
+      alert('Login to see the cart')
     }
 
     const ShowCart = async () => {
@@ -57,14 +55,12 @@ const page = () => {
         const userid = response.data.userid
 
         const response2 = await axios.get(`${apiUrl}/api/cart/${userid}/`)
-        console.log(response2.data.message)
         setcartItems(response2.data.message)
+        setIsLoading(false)  // Data fetched, set loading to false
 
       } catch (error: any) {
         if (error.response.status === 401) {
-
           try {
-
             const response = await axios.post(`${apiUrl}/api/token/refresh/`, {
               'refresh': refreshToken
             });
@@ -78,18 +74,10 @@ const page = () => {
 
         router.refresh()
       }
-
-
-
-
     }
 
     ShowCart()
-
-
   }, [])
-
-
 
   const handleIncrease = (cart: string) => {
     const newcartitem = cartItems.map((items) =>
@@ -97,7 +85,7 @@ const page = () => {
         ? { ...items, quantity: items.quantity + 1 }
         : items
     );
-    setcartItems(newcartitem); 
+    setcartItems(newcartitem);
   };
 
   const handleDecrease = (cart: string) => {
@@ -109,9 +97,14 @@ const page = () => {
     setcartItems(newcartitem);
   };
 
-
+  // Render loader while fetching data
+  if (isLoading) {
+    return (
+        <Loader />
+    );
+  }
   return (
-    <div className='flex flex-col justify-center items-center gap-5 mb-10 w-full'>
+    <div className='flex flex-col items-center gap-5 mb-10 w-full min-h-screen'>
       <h1 className='text-2xl font-bold'>Cart Items</h1>
       {cartItems &&
         cartItems.map((items) => (
@@ -135,7 +128,6 @@ const page = () => {
               <h3 className="text-lg font-semibold">{items.product.name}</h3>
               <p className="text-sm text-gray-500">{items.product.description}</p>
               <p className="text-md text-gray-700 mt-2">Price: Rs. {items.product.price}</p>
-              {/* <p className="text-sm text-gray-500">Stock: {items.productid.stock}</p> */}
             </div>
 
             {/* Quantity and buttons */}
@@ -158,7 +150,7 @@ const page = () => {
           </div>
         ))}
     </div>
-
   )
 }
+
 export default page

@@ -33,8 +33,6 @@ class CartView(APIView):
             user = User.objects.get(id=userid)
             cartid = CartModel.objects.filter(userid=user)
             serializer = CartSerializer(cartid, many=True)
-            print(serializer.data)
-
             return Response({"message": serializer.data}, status=status.HTTP_200_OK)
         except:
             return Response({"message": "imhere"}, status=status.HTTP_204_NO_CONTENT)
