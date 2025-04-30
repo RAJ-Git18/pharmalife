@@ -5,7 +5,6 @@ import { useState, useEffect } from 'react'
 import axios from 'axios'
 import { useRouter } from 'next/navigation'
 import Image from 'next/image'
-import { clsx } from 'clsx';
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL
 
@@ -23,8 +22,9 @@ interface ProductItemsInterface {
 interface CartItemsInterface {
   cartid: string,
   userid: number,
-  productid: ProductItemsInterface,
-  quantity: number
+  productid: string,
+  quantity: number,
+  product : ProductItemsInterface
 }
 
 const page = () => {
@@ -32,9 +32,6 @@ const page = () => {
   const router = useRouter()
 
   const [cartItems, setcartItems] = useState<CartItemsInterface[]>([])
-
-  const [quantity, setquantity] = useState<number>(0)
-
 
 
   useEffect(() => {
@@ -60,6 +57,7 @@ const page = () => {
         const userid = response.data.userid
 
         const response2 = await axios.get(`${apiUrl}/api/cart/${userid}/`)
+        console.log(response2.data.message)
         setcartItems(response2.data.message)
 
       } catch (error: any) {
@@ -99,7 +97,7 @@ const page = () => {
         ? { ...items, quantity: items.quantity + 1 }
         : items
     );
-    setcartItems(newcartitem);
+    setcartItems(newcartitem); 
   };
 
   const handleDecrease = (cart: string) => {
@@ -124,8 +122,8 @@ const page = () => {
             {/* Image */}
             <div className="flex-shrink-0">
               <Image
-                src={`${apiUrl}${items.productid.image}`}
-                alt={items.productid.name}
+                src={`${apiUrl}${items.product.image}`}
+                alt={items.product.name}
                 height={50}
                 width={50}
                 className="object-cover rounded-md"
@@ -134,9 +132,9 @@ const page = () => {
 
             {/* Product details */}
             <div className="flex-grow ml-4">
-              <h3 className="text-lg font-semibold">{items.productid.name}</h3>
-              <p className="text-sm text-gray-500">{items.productid.description}</p>
-              <p className="text-md text-gray-700 mt-2">Price: Rs. {items.productid.price}</p>
+              <h3 className="text-lg font-semibold">{items.product.name}</h3>
+              <p className="text-sm text-gray-500">{items.product.description}</p>
+              <p className="text-md text-gray-700 mt-2">Price: Rs. {items.product.price}</p>
               {/* <p className="text-sm text-gray-500">Stock: {items.productid.stock}</p> */}
             </div>
 
@@ -160,6 +158,7 @@ const page = () => {
           </div>
         ))}
     </div>
+
   )
 }
 export default page

@@ -13,6 +13,7 @@ urlpatterns = [
     # write the path name here!!
     path("login/", LoginView.as_view(), name="login"),
     path("register/", RegisterAPI.as_view(), name="register"),
+    path("cart/", CartView.as_view(), name="cart"),
     path("cart/<int:userid>/", CartView.as_view(), name="cart"),
     path("orders/", OrdersView.as_view(), name="orders"),
     path("protected/", ProtectedView.as_view(), name="protected"),

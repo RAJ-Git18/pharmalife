@@ -100,9 +100,14 @@ export default function Home() {
 
       const userid = response.data.userid
 
-      const response2 = await axios.post(`${apiUrl}/api/cart/${userid}/`,
+      const response2 = await axios.post(`${apiUrl}/api/cart/`,
         {
-          "productid": product_id
+          userid : userid,
+          productid : product_id
+        }, {
+          headers: {
+            'Content-Type':'application/json'
+          }
         }
       )
 
