@@ -6,6 +6,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import get_user_model
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
+from rest_framework import status
 
 User = get_user_model()
 
@@ -34,7 +35,7 @@ class LoginView(APIView):
                 "isadmin": user.is_superuser,
                 "access": str(access),
                 "refresh": str(refresh),
-                "status": "Logged In"
+                "status": "Logged In",
             }
         )
 
@@ -46,5 +47,5 @@ class ProtectedView(APIView):
     def get(self, request):
         user = request.user
         if user.is_superuser:
-            return Response({"message": "admin"})
-        return Response({"message": "user", "userid": user.id})
+            return Response({"message": "admin", "user.id": user.id}, status=status.HTTP_201_CREATED)
+        return Response({"message": "user", "userid": user.id}, status=status.HTTP_201_CREATED)

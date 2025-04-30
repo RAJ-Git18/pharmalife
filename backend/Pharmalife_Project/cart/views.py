@@ -28,11 +28,24 @@ class CartView(APIView):
         return Response(serializer.errors)
 
     def get(self, request, *args, **kwargs):
-        userid = kwargs.get('userid')
+        userid = kwargs.get("userid")
         try:
             user = User.objects.get(id=userid)
             cartid = CartModel.objects.filter(userid=user)
             serializer = CartSerializer(cartid, many=True)
             return Response({"message": serializer.data}, status=status.HTTP_200_OK)
         except:
-            return Response({"message": "imhere"}, status=status.HTTP_204_NO_CONTENT)
+            return Response(status=status.HTTP_204_NO_CONTENT)
+
+    def delete(self, request, *args, **kwargs):
+        cartid = kwargs.get("cartid")
+        try:
+            cartitem = CartModel.objects.filter(cartid=cartid).first()
+            print(cartitem)
+            if cartitem is not None:
+                cartitem.delete()
+            return Response(
+                status=status.HTTP_201_CREATED,
+            )
+        except:
+            return Response(status=status.HTTP_404_NOT_FOUND)
