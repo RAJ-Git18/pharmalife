@@ -7,12 +7,11 @@ import { ShoppingCart, Menu, X } from "lucide-react";
 import { useEffect, useState } from 'react';
 import { FcGoogle } from 'react-icons/fc';
 import { useRouter, usePathname } from 'next/navigation';
-import GoogleSignIn from './GoogleSignIn'; import { User } from 'lucide-react'
+import GoogleSignIn from './GoogleSignIn';
+import { User } from 'lucide-react'
 import { useCartContext } from '@/context/CardContext';
 
-
 const apiUrl = process.env.NEXT_PUBLIC_API_URL
-
 
 interface LoginData {
   email: string;
@@ -36,18 +35,13 @@ interface FormErrors {
 export default function Navbar() {
   const router = useRouter()
   const pathname = usePathname()
-
-
   const { cartCount, setCartCount } = useCartContext()
-
-
 
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
   const [showAuthForm, setShowAuthForm] = useState<boolean>(false);
   const [isLogin, setIsLogin] = useState<boolean>(true);
   const [loginstatus, setloginstatus] = useState<boolean>(false)
   const [toggleuser, settoggleuser] = useState<boolean>(false)
-
 
   useEffect(() => {
     const isloggedin = localStorage.getItem('status')
@@ -56,8 +50,6 @@ export default function Navbar() {
     }
   }, [])
 
-
-  // Separate state for login and signup
   const [loginData, setLoginData] = useState<LoginData>({
     email: '',
     password: ''
@@ -163,9 +155,6 @@ export default function Navbar() {
     return valid;
   };
 
-
-
-
   const handleLoginSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validateLogin()) {
@@ -181,19 +170,16 @@ export default function Navbar() {
         }
       );
 
-      //now save the tokens to the local storage
       localStorage.setItem('access', response.data.access)
       localStorage.setItem('refresh', response.data.refresh)
 
       console.log(response.data)
-
 
       if (response.data.message === "Login successful") {
         localStorage.setItem('status', response.data.status)
         setloginstatus(true)
         if (response.data.isadmin) {
           window.location.href = ('/adminsite/dashboard')
-
           setShowAuthForm(false)
         }
         else {
@@ -207,7 +193,6 @@ export default function Navbar() {
     }
   }
 
-
   const handleSignupSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!validateSignup()) return;
@@ -217,11 +202,10 @@ export default function Navbar() {
         username: signupData.name,
         email: signupData.email,
         password: signupData.password,
-
       };
 
       const response = await axios.post(
-        `${apiUrl}/accounts/register/`,  // Your Django registration endpoint
+        `${apiUrl}/accounts/register/`,
         registrationData,
         {
           headers: {
@@ -231,22 +215,15 @@ export default function Navbar() {
       );
 
       console.log("Registration successful:", response.data);
-
-      // Optional: Automatically log the user in after registration
-
-
-      // Close the auth form after successful registration
       setShowAuthForm(false);
       resetForms();
 
     } catch (error) {
       if (axios.isAxiosError(error)) {
-        // Handle backend validation errors
         if (error.response) {
           const backendErrors = error.response.data;
           const formattedErrors: FormErrors = {};
 
-          // Map backend errors to form fields
           if (backendErrors.email) {
             formattedErrors.email = backendErrors.email.join(' ');
           }
@@ -268,7 +245,6 @@ export default function Navbar() {
 
   const handleGoogleSignIn = () => {
     console.log('Signing in with Google');
-    // Implement Google sign-in logic here
   };
 
   const resetForms = () => {
@@ -289,18 +265,14 @@ export default function Navbar() {
     }
   };
 
-
   const handleLogout = () => {
     setloginstatus(false)
-    settoggleuser(!toggleuser)
+    settoggleuser(false)
     localStorage.removeItem('access');
     localStorage.removeItem('refresh');
     localStorage.removeItem('status');
-
     (pathname === '/') ? router.refresh() : router.push('/')
-
   }
-
 
   return (
     <>
@@ -341,38 +313,57 @@ export default function Navbar() {
               )}
             </Link>
 
-
-
-            {/* to handle the login-logout toggle */}
-
-            {
-              !loginstatus ? (
+            {/* User Authentication Section */}
+            {!loginstatus ? (
+              <button
+                onClick={toggleAuthForm}
+                className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors font-semibold"
+              >
+                Login
+              </button>
+            ) : (
+              <div className="relative">
                 <button
-                  onClick={toggleAuthForm}
-                  className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors font-semibold"
+                  onClick={() => settoggleuser(!toggleuser)}
+                  className="flex items-center space-x-1 focus:outline-none"
                 >
-                  Login
+                  <User className="h-8 w-8 text-gray-700 hover:text-green-600 transition-colors" />
                 </button>
-              ) : (
-                <div className="relative flex flex-col items-center">
-                  <User
-                    onClick={() => { settoggleuser(!toggleuser) }}
-                    className="h-8 w-8 cursor-pointer"  // Make the User icon bigger
-                  />
-                  {toggleuser && (
-                    <button className="absolute top-10 z-50 bg-[#20B472] shadow-lg border rounded-md p-2 text-white font-bold"
 
-
+                {/* Dropdown Menu */}
+                {toggleuser && (
+                  <div className="absolute -right-16 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50 border border-gray-200">
+                    <Link
+                      href="/adminsite/dashboard"
+                      className="block text-center border-b font-semibold px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      onClick={() => settoggleuser(false)}
+                    >
+                      Dashboard
+                    </Link>
+                    <Link
+                        href="/adminsite/products"
+                      className="block text-center border-b font-semibold px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      onClick={() => settoggleuser(false)}
+                    >
+                      Products
+                    </Link>
+                    <Link
+                        href="/adminsite/inquiry"
+                      className="block text-center border-b font-semibold px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+                      onClick={() => settoggleuser(false)}
+                    >
+                      Customer Inquiry
+                    </Link>
+                    <button
                       onClick={handleLogout}
+                      className="block text-center font-semibold w-full px-4 py-2 text-sm text-red-600 hover:bg-gray-100"
                     >
                       Logout
                     </button>
-                  )}
-                </div>
-              )
-            }
-
-
+                  </div>
+                )}
+              </div>
+            )}
           </div>
 
           {/* Mobile Menu Button */}
