@@ -21,12 +21,12 @@ class ProductSerializer(serializers.ModelSerializer):
 
     def to_representation(self, instance):
         representation = super().to_representation(instance)
-        request = self.context.get("request")
-
-        if instance.image and hasattr(instance.image, "url"):
-            if request is not None:
-                representation["image"] = request.build_absolute_uri(instance.image.url)
-            else:
-                representation["image"] = instance.image.url
-
+        if instance.image:
+            representation["image"] = instance.image.url
         return representation
+
+    def get_image(self, obj):
+        request = self.context.get("request")
+        if obj.image and hasattr(obj.image, "url"):
+            return request.build_absolute_uri(obj.image.url)
+        return None
