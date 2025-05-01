@@ -553,7 +553,7 @@ export default function Navbar() {
       )}
 
       {/* Prevent Content Overlap */}
-      <div className="mt-[64px]"></div>
+      <div className="mt-[3rem]"></div>
     </>
   );
 }

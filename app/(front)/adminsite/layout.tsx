@@ -81,6 +81,9 @@ export default function AdminLayout({
           <Link href="/adminsite/inquiry" className="text-gray-700 hover:text-green-600 font-semibold">
             Customer Inquiry
           </Link>
+          <Link href="/adminsite/status" className="text-gray-700 hover:text-green-600 font-semibold">
+            Status
+          </Link>
         </nav>
       </aside>
 

@@ -134,7 +134,7 @@ export default function Home() {
 
 
   return (
-    <div className="md:mx-32 mx-8 -mt-8">
+    <div className="md:mx-32 mx-8 ">
 
       {/* SLIDER */}
       <div className="slider">

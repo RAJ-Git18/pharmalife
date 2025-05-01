@@ -226,6 +226,7 @@ const page = () => {
 
             </p>
             <button
+             onClick={() => router.push('/scan')}
               className="bg-[#20B472] text-white px-6 py-3 rounded-lg shadow-lg hover:bg-green-600 transition"
             >
               Ok, Proceed
