@@ -24,3 +24,6 @@ class CartSerializer(serializers.ModelSerializer):
             return cart_productid
 
         return CartModel.objects.create(**data)
+
+
+

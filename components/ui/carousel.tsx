@@ -1,7 +1,6 @@
 'use client'
 import React, { useEffect, useCallback } from 'react'
 import useEmblaCarousel from 'embla-carousel-react'
-import Image from 'next/image'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 
 const images = [

@@ -5,7 +5,8 @@ import { ShoppingCart } from 'lucide-react'
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
-import { useCartContext } from "@/context/CardContext";
+import { useCartContext } from "@/context/CartContext";
+import Loader from "@/components/Loader";
 
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL
@@ -37,11 +38,19 @@ export default function Home() {
   const [latestProducts, setLatestProducts] = useState<Product[]>([]);
   const [featuredProducts, setFeaturedProducts] = useState<Product[]>([])
   const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [showSpinner, setshowSpinner] = useState(false)
 
   const router = useRouter()
 
 
   const { cartCount, setCartCount } = useCartContext()
+  const scrollToTop = () => {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth' // for smooth scrolling
+    });
+  };
+
 
 
   useEffect(() => {
@@ -80,56 +89,49 @@ export default function Home() {
 
   //maile yaha bata cart haru add gardai xu
   const addToCart = async (product_id: Number) => {
+    scrollToTop()
+    setshowSpinner(true)
 
     if (!accessToken) {
       alert('Login to add to cart')
+      return
+    }
+
+    if (localStorage.getItem('isadmin') === 'admin') {
+      alert('Admin cannot add to cart')
+      return
     }
 
     try {
-      const response = await axios.get(`${apiUrl}/api/protected/`,
+      const userid = localStorage.getItem('userid')
+      const response = await axios.post(`${apiUrl}/api/cart/`,
         {
-          headers: {
-            'Authorization': `Bearer ${accessToken}`
-          }
-        }
-      )
-
-      if (response.data.message === 'admin') {
-        alert('Admin cannot add to carts')
-        return
-      }
-
-      const userid = response.data.userid
-
-      const response2 = await axios.post(`${apiUrl}/api/cart/`,
-        {
-          userid : userid,
-          productid : product_id
+          userid: userid,
+          productid: product_id
         }, {
-          headers: {
-            'Content-Type':'application/json'
-          }
+        headers: {
+          'Content-Type': 'application/json'
         }
+      }
       )
 
-      if (response2.status === 201) {
+      if (response.status === 201) {
+        setshowSpinner(false)
         setCartCount(cartCount + 1)
         return
       }
-      alert('Cart cannot be added!')
     } catch (error) {
-      console.error(error)
-      // alert('Login to add to carts')
-      const response = await axios.post(`${apiUrl}/api/token/refresh/`, {
-        'refresh': refreshToken
-      });
-
-      localStorage.setItem('access', response.data.access);
-      setTimeout(() => {
-        router.push('/');
-        alert('Try again')
-      }, 1000);
+      alert('Cart cannot be added!')
+      window.location.reload()
     }
+  }
+
+  if (showSpinner) {
+    return (
+      <div className="h-screen flex justify-center items-center -mt-24 backdrop-blur-sm">
+        <Loader />
+      </div>
+    )
   }
 
 

@@ -3,6 +3,7 @@ from rest_framework.views import APIView
 from .models import CartModel
 from .serializers import CartSerializer
 from rest_framework import status
+from rest_framework.permissions import IsAuthenticated
 
 from django.contrib.auth import get_user_model
 
@@ -49,3 +50,5 @@ class CartView(APIView):
             )
         except:
             return Response(status=status.HTTP_404_NOT_FOUND)
+
+

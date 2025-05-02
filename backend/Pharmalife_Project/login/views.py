@@ -3,12 +3,11 @@ from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny
 from django.contrib.auth import authenticate
 from rest_framework_simplejwt.tokens import RefreshToken
-from django.contrib.auth import get_user_model
 from rest_framework.permissions import IsAuthenticated
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework import status
 
-User = get_user_model()
+from accounts.models import CustomUser
 
 
 class LoginView(APIView):
@@ -17,6 +16,9 @@ class LoginView(APIView):
     def post(self, request):
         email = request.data.get("email")
         password = request.data.get("password")
+
+        myuser = CustomUser.objects.filter(email=email).first()
+        print(myuser)
 
         user = authenticate(email=email, password=password)
         if user is None:
@@ -28,16 +30,20 @@ class LoginView(APIView):
         refresh = RefreshToken.for_user(user)
         access = refresh.access_token
 
-        # Create response
-        return Response(
-            {
-                "message": "Login successful",
-                "isadmin": user.is_superuser,
-                "access": str(access),
-                "refresh": str(refresh),
-                "status": "Logged In",
-            }
-        )
+        if myuser:
+
+            # Create response
+            return Response(
+                {
+                    "message": "Login successful",
+                    "isadmin": user.is_superuser,
+                    "access": str(access),
+                    "refresh": str(refresh),
+                    "status": "Logged In",
+                    "userid": user.pk,
+                    "cartcount": myuser.cartcount,
+                }
+            )
 
 
 class ProtectedView(APIView):
@@ -47,5 +53,9 @@ class ProtectedView(APIView):
     def get(self, request):
         user = request.user
         if user.is_superuser:
-            return Response({"message": "admin", "user.id": user.id}, status=status.HTTP_201_CREATED)
-        return Response({"message": "user", "userid": user.id}, status=status.HTTP_201_CREATED)
+            return Response(
+                {"message": "admin", "user.id": user.id}, status=status.HTTP_201_CREATED
+            )
+        return Response(
+            {"message": "user", "userid": user.id}, status=status.HTTP_201_CREATED
+        )

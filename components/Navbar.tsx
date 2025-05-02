@@ -9,7 +9,7 @@ import { FcGoogle } from 'react-icons/fc';
 import { useRouter, usePathname } from 'next/navigation';
 import GoogleSignIn from './GoogleSignIn';
 import { User } from 'lucide-react'
-import { useCartContext } from '@/context/CardContext';
+import { useCartContext } from '@/context/CartContext';
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL
 
@@ -172,6 +172,8 @@ export default function Navbar() {
 
       localStorage.setItem('access', response.data.access)
       localStorage.setItem('refresh', response.data.refresh)
+      localStorage.setItem('userid', response.data.userid)
+      localStorage.setItem('cartCount', response.data.cartcount)
 
       console.log(response.data)
 
@@ -180,10 +182,12 @@ export default function Navbar() {
         setloginstatus(true)
         if (response.data.isadmin) {
           window.location.href = ('/adminsite/dashboard')
+          localStorage.setItem('isadmin', 'admin')
           setShowAuthForm(false)
         }
         else {
           window.location.href = '/'
+          localStorage.setItem('isadmin', 'user')
           setShowAuthForm(false)
         }
       }
@@ -265,14 +269,40 @@ export default function Navbar() {
     }
   };
 
-  const handleLogout = () => {
+  const handleLogout = async () => {
     setloginstatus(false)
-    settoggleuser(false)
-    localStorage.removeItem('access');
-    localStorage.removeItem('refresh');
-    localStorage.removeItem('status');
-    (pathname === '/') ? router.refresh() : router.push('/')
-  }
+    try {
+      const userid = localStorage.getItem('userid')
+      const cartCount = localStorage.getItem('cartCount') || '0';
+
+      // Send logout request with cart count
+      const response = await axios.post(
+        `${apiUrl}/api/storecartcount/${userid}/`,
+        { cart_count: parseInt(cartCount, 10) },
+        {
+          headers: {
+            'Content-Type': 'application/json',
+          }
+        }
+      );
+
+      if (response.status === 200) {
+        localStorage.removeItem('access');
+        localStorage.removeItem('refresh');
+        localStorage.removeItem('cartCount');
+        localStorage.removeItem('status');
+        localStorage.removeItem('userid');
+        localStorage.removeItem('isadmin');
+        setCartCount(0);
+        router.push('/');
+        return
+      }
+
+
+    } catch (error:any) {
+      alert('Logout failed');
+    }
+  };
 
   return (
     <>
@@ -341,14 +371,14 @@ export default function Navbar() {
                       Dashboard
                     </Link>
                     <Link
-                        href="/adminsite/products"
+                      href="/adminsite/products"
                       className="block text-center border-b font-semibold px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                       onClick={() => settoggleuser(false)}
                     >
                       Products
                     </Link>
                     <Link
-                        href="/adminsite/inquiry"
+                      href="/adminsite/inquiry"
                       className="block text-center border-b font-semibold px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                       onClick={() => settoggleuser(false)}
                     >

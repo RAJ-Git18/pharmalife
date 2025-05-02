@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation'
 import Image from 'next/image'
 import Loader from '@/components/Loader'
 import { Trash } from 'lucide-react'
-import { useCartContext } from '@/context/CardContext'
+import { useCartContext } from '@/context/CartContext'
 import Link from 'next/link'
 
 const apiUrl = process.env.NEXT_PUBLIC_API_URL
@@ -111,7 +111,7 @@ const page = () => {
     setCartCount(cartCount - 1)
   };
 
-  const DeleteCart = async (cartid: string, quantity:number) => {
+  const DeleteCart = async (cartid: string, quantity: number) => {
     setIsDeleting(true)
     try {
       await axios.delete(`${apiUrl}/api/cart/${cartid}/`)
